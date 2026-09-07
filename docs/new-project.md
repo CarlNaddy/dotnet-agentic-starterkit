@@ -121,7 +121,8 @@ migrations, or seed data — like `rails new`.
 
 ## Step 3 — Point at your database
 
-`new-project.sh` already did this: its **"==> Local database"** step reads
+`new-project.sh` already did this: its **"==> Local database"** step (which is
+just `bash scripts/setup-local-db.sh` — runnable on its own any time) reads
 `POSTGRES_DB` / `POSTGRES_USER` / `POSTGRES_PASSWORD` back out of the renamed
 `compose.yaml`, sets the `ConnectionStrings:Default` user-secret to match (run
 against `Contoso.Portal.csproj`), and runs `docker compose up -d db`. The
@@ -229,7 +230,7 @@ you decide).
 | `compose.yaml` shape | — |
 | `Program.cs` wiring, `Endpoints/`, `Localization/`, `Resources/`, `tests/<Name>.Tests/` harness | — |
 | `fly.toml` / `.github/workflows/deploy.yml` (P5.3) — `fly.toml`'s `app` is rewritten to your lowercased project name (like `compose.yaml`'s image name). Fly app names must be **globally unique**, so confirm that value is free before `fly apps create` and change `app` if not — `flyctl deploy` reads that line for its target. `scripts/new-project.sh` installs `flyctl` (best-effort); the rest of the account-side setup is in `docs/deployment.md`'s P5.3 section. | — |
-| `scripts/preflight.sh`, `scripts/preflight.ps1`, `scripts/_find-git-bash.ps1`, `scripts/check-plugins.sh`, `scripts/install-flyctl.sh`, `scripts/setup-openspec.sh`, `docs/ef-migrations.md` | *(keep these)* |
+| `scripts/preflight.sh`, `scripts/preflight.ps1`, `scripts/_find-git-bash.ps1`, `scripts/check-plugins.sh`, `scripts/install-flyctl.sh`, `scripts/setup-openspec.sh`, `scripts/setup-local-db.sh`, `docs/ef-migrations.md` | *(keep these)* |
 | `Components/Pages/Listings/`, `Data/Listing.cs`, `Data/Seed/`, `Features/Listings/`, `Endpoints/ListingsApiEndpoints.cs`, `Features/Jobs/ListingJobs.cs` — kept by default | *removed by `scripts/remove-sample.sh`, run separately, any time* |
 
 Remove by hand once set up: `scripts/new-project.sh`, `scripts/new-project.ps1`,

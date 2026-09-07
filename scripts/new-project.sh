@@ -161,58 +161,12 @@ dotnet tool restore \
 
 echo
 echo "==> Local database — Postgres via Docker + dev connection string"
-# compose.yaml's db service and the host dev-loop connection string
-# (user-secrets, plan P1.3) must agree on database / user / password. The
-# identifier rewrite above already put $NEW into compose.yaml's POSTGRES_DB /
-# POSTGRES_USER, so read all three values straight back out of it — the secret
-# then can't drift from what the container actually runs with. Best-effort and
-# non-fatal, same as the tool-restore / AI-tooling / flyctl steps: a scripted
-# rename shouldn't abort because Docker happens to be down.
+# Extracted to scripts/setup-local-db.sh so it can be rerun on its own (same
+# reasoning as install-flyctl.sh / check-plugins.sh). Best-effort and
+# non-fatal here: a scripted rename shouldn't abort because Docker is down.
 db_note=""
-compose_env() { [ -f compose.yaml ] && sed -n "s/^[[:space:]]*$1:[[:space:]]*//p" compose.yaml | head -n1; }
-pg_db="$(compose_env POSTGRES_DB || true)"
-pg_user="$(compose_env POSTGRES_USER || true)"
-pg_pw="$(compose_env POSTGRES_PASSWORD || true)"
-
-if [ -z "$pg_db" ] || [ -z "$pg_user" ] || [ -z "$pg_pw" ]; then
-    db_note="local DB — couldn't read POSTGRES_* from compose.yaml; set the connection string and start Postgres by hand (see the manual steps below)"
-else
-    # Host port: compose.yaml maps "<host>:5432". If <host> is already taken
-    # (another project's database, say), `docker compose up` can't bind it —
-    # so probe the port and, when it's busy and not our own db container,
-    # walk up to the first free one, rewriting the compose mapping and the
-    # connection string together so they can't disagree.
-    host_port="$(sed -n 's/^[[:space:]]*-[[:space:]]*"\([0-9]\{1,5\}\):5432".*/\1/p' compose.yaml | head -n1)"
-    host_port="${host_port:-5432}"
-    if command -v docker >/dev/null 2>&1; then
-        port_busy() { (exec 3<>"/dev/tcp/127.0.0.1/$1") >/dev/null 2>&1; }
-        ours_on_port() {
-            local cid; cid="$(docker compose ps -q db 2>/dev/null || true)"
-            [ -n "$cid" ] && docker port "$cid" 5432/tcp 2>/dev/null | grep -qE ":$1\$"
-        }
-        if port_busy "$host_port" && ! ours_on_port "$host_port"; then
-            p=$((host_port + 1))
-            while [ "$p" -lt 65535 ] && port_busy "$p"; do p=$((p + 1)); done
-            echo "    port $host_port is in use — moving Postgres to $p"
-            sed -i "s/- \"${host_port}:5432\"/- \"${p}:5432\"/" compose.yaml
-            host_port="$p"
-        fi
-    fi
-
-    conn="Host=localhost;Port=${host_port};Database=${pg_db};Username=${pg_user};Password=${pg_pw}"
-    echo "    matching compose.yaml: Database=${pg_db} Username=${pg_user} Password=*** Port=${host_port}"
-    if dotnet user-secrets set "ConnectionStrings:Default" "$conn" --project "${ROOT}/${NEW}.csproj" >/dev/null 2>&1; then
-        echo "    set user-secret ConnectionStrings:Default"
-    else
-        db_note="local DB — 'dotnet user-secrets set' failed; rerun in the folder with ${NEW}.csproj:  dotnet user-secrets set \"ConnectionStrings:Default\" \"${conn}\""
-    fi
-    if command -v docker >/dev/null 2>&1 && docker compose up -d db; then
-        echo "    started Postgres (docker compose up -d db)"
-    else
-        nl=$'\n'
-        db_note="${db_note:+${db_note}${nl}}local DB — 'docker compose up -d db' did not run (Docker not available?); start it before 'dotnet run -- seed'"
-    fi
-fi
+"$ROOT/scripts/setup-local-db.sh" "$NEW" \
+    || db_note="local DB — setup had issues; rerun:  bash scripts/setup-local-db.sh"
 
 echo
 echo "==> AI tooling — installing Claude Code plugins/skills"
@@ -285,7 +239,8 @@ manual steps:
      Keep scripts/remove-sample.sh until you've actually run it (or decided to
      keep the sample for good — then remove it too). Keep: scripts/preflight.sh,
      scripts/preflight.ps1, scripts/_find-git-bash.ps1, scripts/check-plugins.sh,
-     scripts/install-flyctl.sh, scripts/setup-openspec.sh, docs/ef-migrations.md,
+     scripts/install-flyctl.sh, scripts/setup-openspec.sh, scripts/setup-local-db.sh,
+     docs/ef-migrations.md,
      and — to pull future template updates — scripts/update-from-template.sh,
      docs/updating-from-template.md, .template-version.
   7. git add -A && git commit -m "Initialize from template"

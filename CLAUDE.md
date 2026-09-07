@@ -37,6 +37,12 @@ dotnet watch run            # dev loop
 dotnet test                 # xUnit v3 via the Microsoft Testing Platform
 ```
 
+Fresh clone with no `ConnectionStrings:Default` set yet (or one that drifted):
+`bash scripts/setup-local-db.sh` does the first two lines plus the user-secret
+in one go — reads the creds from `compose.yaml`, picks a free host port if 5432
+is taken, sets the secret to match, starts `db`. Same step `new-project.sh`
+runs; safe to re-run.
+
 ## Data access
 
 **EF Core 10 + PostgreSQL** (`Npgsql.EntityFrameworkCore.PostgreSQL`), the same
