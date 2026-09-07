@@ -669,7 +669,7 @@ Data Protection keys), so they can't be deleted piecemeal.
 `scripts/new-project.sh` and `scripts/remove-sample.sh` (the latter runnable
 standalone too) both refuse to run — via a shared `scripts/_guard-not-template.sh`
 — if this repo's `origin` remote is still the canonical
-`github.com/CarlNaddy/DotnetAgenticStarterkit`: a project created the documented way (GitHub's
+`github.com/CarlNaddy/dotnet-agentic-starterkit`: a project created the documented way (GitHub's
 "Use this template", then clone *that* new repo) never has this origin, only the
 template repo itself does, so the check only ever fires by mistake. Bypass with
 `I_UNDERSTAND_THIS_IS_THE_TEMPLATE=1`, for genuine template-maintenance work only.

@@ -72,7 +72,7 @@ Git Bash (see the Prerequisites note above).
 
 The working tree must be clean. Both `new-project.sh` and `remove-sample.sh`
 refuse to run if this repo's `origin` remote is still the canonical
-`github.com/CarlNaddy/DotnetAgenticStarterkit` — a project created via "Use this
+`github.com/CarlNaddy/dotnet-agentic-starterkit` — a project created via "Use this
 template" always gets its own new `origin`, so this only ever fires if
 you're accidentally in the template repo itself, not a project made from it
 (bypass with `I_UNDERSTAND_THIS_IS_THE_TEMPLATE=1`, template-maintenance

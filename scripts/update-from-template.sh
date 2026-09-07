@@ -22,7 +22,9 @@
 
 set -euo pipefail
 
-TEMPLATE_URL_DEFAULT="https://github.com/CarlNaddy/DotnetAgenticStarterkit.git"
+# GitHub repo slug is kebab-case (renamed); the code identifier below stays
+# PascalCase — the two are deliberately different, don't derive one from the other.
+TEMPLATE_URL_DEFAULT="https://github.com/CarlNaddy/dotnet-agentic-starterkit.git"
 OLD="DotnetAgenticStarterkit"
 
 base_override=""

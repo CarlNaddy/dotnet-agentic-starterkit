@@ -97,7 +97,7 @@ cat > README.md <<EOF
 # ${NEW}
 
 ASP.NET Core Blazor Web App — .NET 10, MudBlazor, EF Core + PostgreSQL.
-Started from the [DotnetAgenticStarterkit](https://github.com/CarlNaddy/DotnetAgenticStarterkit) template.
+Started from the [dotnet-agentic-starterkit](https://github.com/CarlNaddy/dotnet-agentic-starterkit) template.
 
 ## Run locally
 
@@ -126,8 +126,10 @@ echo "==> Recording template baseline (.template-version)"
 # scripts/update-from-template.sh diffs the template from this commit forward.
 # HEAD is still the pristine template tree here (nothing has been committed yet),
 # so its tree hash matches the template commit we were created from.
+# The GitHub repo slug is kebab-case (renamed); $OLD is the PascalCase code
+# identifier — the two are deliberately different, so this URL is a literal.
 git remote get-url template >/dev/null 2>&1 \
-    || git remote add template "https://github.com/CarlNaddy/${OLD}.git"
+    || git remote add template "https://github.com/CarlNaddy/dotnet-agentic-starterkit.git"
 base=""
 if git fetch -q template 2>/dev/null; then
     head_tree="$(git rev-parse 'HEAD^{tree}')"
