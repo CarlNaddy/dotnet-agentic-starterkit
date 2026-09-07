@@ -128,18 +128,21 @@ against `Contoso.Portal.csproj`), and runs `docker compose up -d db`. The
 rename leaves the identifiers as `Contoso.Portal` and the password as the
 `dev_only_change_me` placeholder — fine for local dev.
 
+If host port 5432 was already in use (another project's database, say), the
+step moves `compose.yaml`'s `db` port mapping to the next free port and uses
+that same port in the connection string — look for a `moving Postgres to
+<port>` line in the output. `compose.yaml`'s `db` `ports:` and the `Port=` in
+the user-secret are the record of which port it landed on.
+
 Only if you want a different password (or the script reported a problem — check
 its output / the `local DB —` line at the very end), edit `compose.yaml` and
-re-run both by hand:
+re-run both by hand (keep `Port=` matching `compose.yaml`'s `db` `ports:`):
 
 ```bash
 docker compose down -v && docker compose up -d db
 dotnet user-secrets set "ConnectionStrings:Default" \
   "Host=localhost;Port=5432;Database=Contoso.Portal;Username=Contoso.Portal;Password=<new-pw>"
 ```
-
-Change the host port too if 5432 is taken (`compose.yaml` `ports:` and the
-`Port=` in the connection string).
 
 ## Step 4 — Bring it up
 

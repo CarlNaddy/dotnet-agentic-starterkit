@@ -177,8 +177,30 @@ pg_pw="$(compose_env POSTGRES_PASSWORD || true)"
 if [ -z "$pg_db" ] || [ -z "$pg_user" ] || [ -z "$pg_pw" ]; then
     db_note="local DB — couldn't read POSTGRES_* from compose.yaml; set the connection string and start Postgres by hand (see the manual steps below)"
 else
-    conn="Host=localhost;Port=5432;Database=${pg_db};Username=${pg_user};Password=${pg_pw}"
-    echo "    matching compose.yaml: Database=${pg_db} Username=${pg_user} Password=***"
+    # Host port: compose.yaml maps "<host>:5432". If <host> is already taken
+    # (another project's database, say), `docker compose up` can't bind it —
+    # so probe the port and, when it's busy and not our own db container,
+    # walk up to the first free one, rewriting the compose mapping and the
+    # connection string together so they can't disagree.
+    host_port="$(sed -n 's/^[[:space:]]*-[[:space:]]*"\([0-9]\{1,5\}\):5432".*/\1/p' compose.yaml | head -n1)"
+    host_port="${host_port:-5432}"
+    if command -v docker >/dev/null 2>&1; then
+        port_busy() { (exec 3<>"/dev/tcp/127.0.0.1/$1") >/dev/null 2>&1; }
+        ours_on_port() {
+            local cid; cid="$(docker compose ps -q db 2>/dev/null || true)"
+            [ -n "$cid" ] && docker port "$cid" 5432/tcp 2>/dev/null | grep -qE ":$1\$"
+        }
+        if port_busy "$host_port" && ! ours_on_port "$host_port"; then
+            p=$((host_port + 1))
+            while [ "$p" -lt 65535 ] && port_busy "$p"; do p=$((p + 1)); done
+            echo "    port $host_port is in use — moving Postgres to $p"
+            sed -i "s/- \"${host_port}:5432\"/- \"${p}:5432\"/" compose.yaml
+            host_port="$p"
+        fi
+    fi
+
+    conn="Host=localhost;Port=${host_port};Database=${pg_db};Username=${pg_user};Password=${pg_pw}"
+    echo "    matching compose.yaml: Database=${pg_db} Username=${pg_user} Password=*** Port=${host_port}"
     if dotnet user-secrets set "ConnectionStrings:Default" "$conn" --project "${ROOT}/${NEW}.csproj" >/dev/null 2>&1; then
         echo "    set user-secret ConnectionStrings:Default"
     else
@@ -241,8 +263,11 @@ manual steps:
      Postgres (docker compose up -d db) and set the user-secret
      ConnectionStrings:Default to match compose.yaml's db service
      (Database/Username = ${NEW}, Password = the dev_only_change_me
-     placeholder). Local dev only. To use a different password, edit
-     compose.yaml's POSTGRES_PASSWORD, then re-run:
+     placeholder). Local dev only. If host port 5432 was taken it moved the
+     db mapping in compose.yaml to the next free port and used the same one
+     in the connection string — check the "moving Postgres to <port>" line
+     above. To use a different password, edit compose.yaml's
+     POSTGRES_PASSWORD, then re-run (keep Port= in sync with compose.yaml):
        docker compose down -v && docker compose up -d db
        dotnet user-secrets set "ConnectionStrings:Default" \\
          "Host=localhost;Port=5432;Database=${NEW};Username=${NEW};Password=<new-pw>"
