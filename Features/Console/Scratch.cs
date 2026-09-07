@@ -1,7 +1,7 @@
-using dotnet-agentic-starterkit.Data;
+using DotnetAgenticStarterkit.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace dotnet-agentic-starterkit.Features.Console;
+namespace DotnetAgenticStarterkit.Features.Console;
 
 /// <summary>
 /// The <c>rails console</c> substitute (parity plan P6.2). Edit this method,

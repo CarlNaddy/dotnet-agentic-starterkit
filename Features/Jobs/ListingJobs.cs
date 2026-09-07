@@ -1,7 +1,7 @@
-using dotnet-agentic-starterkit.Data;
+using DotnetAgenticStarterkit.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace dotnet-agentic-starterkit.Features.Jobs;
+namespace DotnetAgenticStarterkit.Features.Jobs;
 
 /// <summary>
 /// Background jobs for the <see cref="Listing"/> feature (parity plan P4.1) —

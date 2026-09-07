@@ -1,4 +1,4 @@
-namespace dotnet-agentic-starterkit.Localization;
+namespace DotnetAgenticStarterkit.Localization;
 
 /// <summary>
 /// Marker type for the app-wide shared resource file. Inject

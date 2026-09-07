@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components.Authorization;
 
-namespace dotnet-agentic-starterkit.Components;
+namespace DotnetAgenticStarterkit.Components;
 
 /// <summary>
 /// Small helpers for reading the cascading <see cref="AuthenticationState"/> from

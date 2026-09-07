@@ -1,7 +1,7 @@
-using dotnet-agentic-starterkit.Features.Files;
-using dotnet-agentic-starterkit.Features.Listings;
-using dotnet-agentic-starterkit.Tests.Infrastructure;
-using dotnet-agentic-starterkit.Tests.TestData;
+using DotnetAgenticStarterkit.Features.Files;
+using DotnetAgenticStarterkit.Features.Listings;
+using DotnetAgenticStarterkit.Tests.Infrastructure;
+using DotnetAgenticStarterkit.Tests.TestData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Hybrid;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,7 +9,7 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 
-namespace dotnet-agentic-starterkit.Tests.Features.Listings;
+namespace DotnetAgenticStarterkit.Tests.Features.Listings;
 
 /// <summary>
 /// <see cref="ListingPhotoService"/> against real Postgres and a real
@@ -139,7 +139,7 @@ public sealed class ListingPhotoServiceTests(PostgresFixture fixture) : Database
     {
         public string ContentRootPath { get; set; } = "";
         public string EnvironmentName { get; set; } = "Test";
-        public string ApplicationName { get; set; } = "dotnet-agentic-starterkit.Tests";
+        public string ApplicationName { get; set; } = "DotnetAgenticStarterkit.Tests";
         public IFileProvider ContentRootFileProvider { get; set; } = null!;
     }
 }

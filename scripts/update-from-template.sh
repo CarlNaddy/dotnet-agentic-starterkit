@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Pull upstream changes from the dotnet-agentic-starterkit template into this project.
+# Pull upstream changes from the DotnetAgenticStarterkit template into this project.
 #
 #   scripts/update-from-template.sh              apply template changes since the
 #                                               recorded baseline (.template-version)
@@ -10,9 +10,9 @@
 #   scripts/update-from-template.sh --url  <git> override the template remote URL
 #
 # Why this script exists: GitHub "Use this template" copies the tree with no fork
-# link, and scripts/new-project.sh renamed the `dotnet-agentic-starterkit` identifier
+# link, and scripts/new-project.sh renamed the `DotnetAgenticStarterkit` identifier
 # throughout this repo. This script bridges both — it diffs the template since the
-# commit you started from, rewrites `dotnet-agentic-starterkit` in that diff to your project's
+# commit you started from, rewrites `DotnetAgenticStarterkit` in that diff to your project's
 # identifier, and applies it with `git apply` (3-way merge, else per-hunk with
 # .rej files). Files you own
 # (README.md, CLAUDE.md, compose.yaml, ...) are never patched automatically; they
@@ -22,8 +22,8 @@
 
 set -euo pipefail
 
-TEMPLATE_URL_DEFAULT="https://github.com/CarlNaddy/dotnet-agentic-starterkit.git"
-OLD="dotnet-agentic-starterkit"
+TEMPLATE_URL_DEFAULT="https://github.com/CarlNaddy/DotnetAgenticStarterkit.git"
+OLD="DotnetAgenticStarterkit"
 
 base_override=""
 name_override=""

@@ -1,11 +1,11 @@
 using Bunit;
-using dotnet-agentic-starterkit.Components.Pages.Listings;
-using dotnet-agentic-starterkit.Tests.Infrastructure;
+using DotnetAgenticStarterkit.Components.Pages.Listings;
+using DotnetAgenticStarterkit.Tests.Infrastructure;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.DependencyInjection;
 using MudBlazor;
 
-namespace dotnet-agentic-starterkit.Tests.Components;
+namespace DotnetAgenticStarterkit.Tests.Components;
 
 /// <summary>
 /// The P2.4 bUnit smoke test: render a real MudBlazor component

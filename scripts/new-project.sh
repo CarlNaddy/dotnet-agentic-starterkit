@@ -5,8 +5,8 @@
 #   scripts/new-project.sh <NewName>                 e.g.  ... Contoso.Portal
 #
 # Runs the preflight check, then:
-#   - replaces the identifier `dotnet-agentic-starterkit` in tracked text files
-#   - renames every file/directory whose path contains `dotnet-agentic-starterkit`
+#   - replaces the identifier `DotnetAgenticStarterkit` in tracked text files
+#   - renames every file/directory whose path contains `DotnetAgenticStarterkit`
 #   - regenerates the UserSecretsId, resets README.md
 #   - removes this repo's history docs
 #
@@ -19,7 +19,7 @@
 
 set -euo pipefail
 
-OLD="dotnet-agentic-starterkit"
+OLD="DotnetAgenticStarterkit"
 NEW="${1:-}"
 [ $# -le 1 ] || { echo "unexpected argument: $2" >&2; exit 2; }
 
@@ -83,7 +83,7 @@ cat > README.md <<EOF
 # ${NEW}
 
 ASP.NET Core Blazor Web App — .NET 10, MudBlazor, EF Core + PostgreSQL.
-Started from the [dotnet-agentic-starterkit](https://github.com/CarlNaddy/dotnet-agentic-starterkit) template.
+Started from the [DotnetAgenticStarterkit](https://github.com/CarlNaddy/DotnetAgenticStarterkit) template.
 
 ## Run locally
 
@@ -134,7 +134,7 @@ git add .template-version 2>/dev/null || true
 
 echo
 echo "==> Restoring local dotnet tools (dotnet-ef)"
-# .config/dotnet-tools.json is generic (no 'dotnet-agentic-starterkit' identifier), so this
+# .config/dotnet-tools.json is generic (no 'DotnetAgenticStarterkit' identifier), so this
 # can run any time after the rename. Idempotent (a no-op if already restored)
 # and non-fatal, same reasoning as the AI-tooling install below — preflight.sh
 # already confirmed the .NET 10 SDK is present, so this is a project-level
@@ -146,7 +146,7 @@ dotnet tool restore \
 echo
 echo "==> AI tooling — installing Claude Code plugins/skills"
 # .claude/settings.json carries the dotnet*/mudblazor plugin list over unchanged
-# (no 'dotnet-agentic-starterkit' identifier in it), so it already declares what this new
+# (no 'DotnetAgenticStarterkit' identifier in it), so it already declares what this new
 # project needs — only the project-scoped install is still missing. Idempotent
 # (check-plugins.sh only touches what's missing) and non-fatal: a scripted
 # rename this far along shouldn't abort over AI tooling. ai_note stays empty

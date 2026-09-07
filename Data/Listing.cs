@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 
-namespace dotnet-agentic-starterkit.Data;
+namespace DotnetAgenticStarterkit.Data;
 
 public enum ListingStatus
 {

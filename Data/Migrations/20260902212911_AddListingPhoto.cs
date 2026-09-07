@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace dotnet-agentic-starterkit.Data.Migrations
+namespace DotnetAgenticStarterkit.Data.Migrations
 {
     /// <inheritdoc />
     public partial class AddListingPhoto : Migration

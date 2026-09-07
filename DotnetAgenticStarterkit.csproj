@@ -10,7 +10,7 @@
        publish, not a hand-maintained Dockerfile: `dotnet publish
        -t:PublishContainer`. Base image + tag resolve automatically from
        TargetFramework (mcr.microsoft.com/dotnet/aspnet:10.0). Repository name
-       is self-derived, not a literal "dotnet-agentic-starterkit" string — Docker/OCI
+       is self-derived, not a literal "DotnetAgenticStarterkit" string — Docker/OCI
        repository names must be lowercase, but this repo's own template
        rename (scripts/new-project.sh) produces PascalCase project names
        (e.g. "Contoso.Portal", the documented example) by design, and a

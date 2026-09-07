@@ -3,7 +3,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace dotnet-agentic-starterkit.Data.Migrations
+namespace DotnetAgenticStarterkit.Data.Migrations
 {
     /// <inheritdoc />
     public partial class AddDataProtectionKeys : Migration

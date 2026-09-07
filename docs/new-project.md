@@ -72,17 +72,17 @@ Git Bash (see the Prerequisites note above).
 
 The working tree must be clean. Both `new-project.sh` and `remove-sample.sh`
 refuse to run if this repo's `origin` remote is still the canonical
-`github.com/CarlNaddy/dotnet-agentic-starterkit` — a project created via "Use this
+`github.com/CarlNaddy/DotnetAgenticStarterkit` — a project created via "Use this
 template" always gets its own new `origin`, so this only ever fires if
 you're accidentally in the template repo itself, not a project made from it
 (bypass with `I_UNDERSTAND_THIS_IS_THE_TEMPLATE=1`, template-maintenance
 only). The script:
 
-- replaces the `dotnet-agentic-starterkit` identifier in every tracked text file
+- replaces the `DotnetAgenticStarterkit` identifier in every tracked text file
   (namespaces, usings, `_Imports.razor`, `.slnx`, launch profiles, …);
-- renames `dotnet-agentic-starterkit.csproj` → `Contoso.Portal.csproj`,
-  `dotnet-agentic-starterkit.slnx` → `Contoso.Portal.slnx`, and
-  `tests/dotnet-agentic-starterkit.Tests/` → `tests/Contoso.Portal.Tests/`;
+- renames `DotnetAgenticStarterkit.csproj` → `Contoso.Portal.csproj`,
+  `DotnetAgenticStarterkit.slnx` → `Contoso.Portal.slnx`, and
+  `tests/DotnetAgenticStarterkit.Tests/` → `tests/Contoso.Portal.Tests/`;
 - regenerates `<UserSecretsId>`;
 - resets `README.md` to a short project stub;
 - deletes this repo's history docs (`rails-parity-plan.md`, `setup-log.md`);
@@ -224,7 +224,7 @@ you decide).
 | `CLAUDE.md`, `Directory.Build.props`, `Directory.Packages.props`, `.editorconfig`, `.gitattributes`, `global.json` | — |
 | `compose.yaml` shape | — |
 | `Program.cs` wiring, `Endpoints/`, `Localization/`, `Resources/`, `tests/<Name>.Tests/` harness | — |
-| `fly.toml` / `.github/workflows/deploy.yml` (P5.3) — `fly.toml`'s `app` name is deliberately **not** rewritten (excluded from the identifier rewrite; Fly app names have different rules than a C# identifier). **This repo's own `fly.toml` currently names the maintainer's live instance (`carlnaddy-dotnet-agentic-starterkit`) — not a placeholder — so you must replace it with your own `fly apps create` name before deploying, or you'll be pointing at an app you don't own.** `scripts/new-project.sh` installs `flyctl` (best-effort); the rest of the account-side setup is in `docs/deployment.md`'s P5.3 section. | — |
+| `fly.toml` / `.github/workflows/deploy.yml` (P5.3) — `fly.toml`'s `app` name is deliberately **not** rewritten (excluded from the identifier rewrite; Fly app names have different rules than a C# identifier). **This repo's own `fly.toml` currently names the maintainer's live instance (`carlnaddy-DotnetAgenticStarterkit`) — not a placeholder — so you must replace it with your own `fly apps create` name before deploying, or you'll be pointing at an app you don't own.** `scripts/new-project.sh` installs `flyctl` (best-effort); the rest of the account-side setup is in `docs/deployment.md`'s P5.3 section. | — |
 | `scripts/preflight.sh`, `scripts/preflight.ps1`, `scripts/_find-git-bash.ps1`, `scripts/check-plugins.sh`, `scripts/install-flyctl.sh`, `scripts/setup-openspec.sh`, `docs/ef-migrations.md` | *(keep these)* |
 | `Components/Pages/Listings/`, `Data/Listing.cs`, `Data/Seed/`, `Features/Listings/`, `Endpoints/ListingsApiEndpoints.cs`, `Features/Jobs/ListingJobs.cs` — kept by default | *removed by `scripts/remove-sample.sh`, run separately, any time* |
 

@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
-using dotnet-agentic-starterkit.Data;
+using DotnetAgenticStarterkit.Data;
 
-namespace dotnet-agentic-starterkit.Tests.TestData;
+namespace DotnetAgenticStarterkit.Tests.TestData;
 
 /// <summary>
 /// Guards the P2.2 test-data builder: valid-by-default, overridable, and

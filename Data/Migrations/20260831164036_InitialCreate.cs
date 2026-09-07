@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace dotnet-agentic-starterkit.Data.Migrations
+namespace DotnetAgenticStarterkit.Data.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration

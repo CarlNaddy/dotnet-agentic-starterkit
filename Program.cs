@@ -1,13 +1,13 @@
-using dotnet-agentic-starterkit.Components;
-using dotnet-agentic-starterkit.Components.Account;
-using dotnet-agentic-starterkit.Data;
-using dotnet-agentic-starterkit.Data.Seed;
-using dotnet-agentic-starterkit.Endpoints;
-using dotnet-agentic-starterkit.Features.Console;
-using dotnet-agentic-starterkit.Features.Email;
-using dotnet-agentic-starterkit.Features.Files;
-using dotnet-agentic-starterkit.Features.Jobs;
-using dotnet-agentic-starterkit.Features.Listings;
+using DotnetAgenticStarterkit.Components;
+using DotnetAgenticStarterkit.Components.Account;
+using DotnetAgenticStarterkit.Data;
+using DotnetAgenticStarterkit.Data.Seed;
+using DotnetAgenticStarterkit.Endpoints;
+using DotnetAgenticStarterkit.Features.Console;
+using DotnetAgenticStarterkit.Features.Email;
+using DotnetAgenticStarterkit.Features.Files;
+using DotnetAgenticStarterkit.Features.Jobs;
+using DotnetAgenticStarterkit.Features.Listings;
 using Hangfire;
 using Hangfire.PostgreSql;
 using Microsoft.AspNetCore.Components.Web;
@@ -123,7 +123,7 @@ builder.Services.AddIdentityCore<ApplicationUser>(options =>
 // same Postgres-stored keys wouldn't be recognized as belonging to "this app"
 // from both environments. See docs/deployment.md.
 builder.Services.AddDataProtection()
-    .SetApplicationName("dotnet-agentic-starterkit")
+    .SetApplicationName("DotnetAgenticStarterkit")
     .PersistKeysToDbContext<AppDbContext>();
 
 // P3.3: Register/Login static-SSR pages redirect via NavigationManager, which

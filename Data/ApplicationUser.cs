@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace dotnet-agentic-starterkit.Data;
+namespace DotnetAgenticStarterkit.Data;
 
 /// <summary>
 /// The application user — the ASP.NET Core Identity user for this app

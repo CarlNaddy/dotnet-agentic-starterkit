@@ -31,7 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\dotnet-agentic-starterkit.csproj" />
+    <ProjectReference Include="..\..\DotnetAgenticStarterkit.csproj" />
   </ItemGroup>
 
   <ItemGroup>

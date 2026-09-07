@@ -1,4 +1,4 @@
-namespace dotnet-agentic-starterkit.Features.Console;
+namespace DotnetAgenticStarterkit.Features.Console;
 
 /// <summary>
 /// Entry point for <c>dotnet run -- console</c> — runs <see cref="Scratch.RunAsync"/>

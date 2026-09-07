@@ -1,7 +1,7 @@
-using dotnet-agentic-starterkit.Data;
+using DotnetAgenticStarterkit.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace dotnet-agentic-starterkit.Tests.Infrastructure;
+namespace DotnetAgenticStarterkit.Tests.Infrastructure;
 
 /// <summary>
 /// Base class for tests that exercise a real PostgreSQL database. Derive from it,

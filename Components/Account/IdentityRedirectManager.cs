@@ -1,7 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Components;
 
-namespace dotnet-agentic-starterkit.Components.Account;
+namespace DotnetAgenticStarterkit.Components.Account;
 
 /// <summary>
 /// Redirect helper for Identity's static-SSR pages (Register, Login). During

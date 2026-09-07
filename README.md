@@ -1,4 +1,4 @@
-# dotnet-agentic-starterkit — .NET monolith template
+# DotnetAgenticStarterkit — .NET monolith template
 
 A ready-to-run **ASP.NET Core Blazor** monolith, plus a curated **Claude Code**
 plugin/skill setup and coding conventions. Click **Use this template**, run one
@@ -54,7 +54,7 @@ to look at immediately — strip it down to a clean skeleton any time with
    **Windows without Git Bash yet:** `powershell -File scripts/new-project.ps1
    Contoso.Portal` — same script, delegates via Git Bash.
 
-   Replaces the `dotnet-agentic-starterkit` identifier and every `dotnet-agentic-starterkit`-named file and
+   Replaces the `DotnetAgenticStarterkit` identifier and every `DotnetAgenticStarterkit`-named file and
    folder, regenerates the `UserSecretsId`, resets this README, removes the
    template's history docs, and installs the Claude Code plugins/skills from
    `.claude/settings.json` (idempotent — rerun any time with `bash
@@ -127,7 +127,7 @@ dotnet test
 ```
 
 `dotnet run -- seed` also creates the `Admin` role and a dev admin —
-`admin@dotnet-agentic-starterkit.local` / `Admin!23456` (override with the `Seed:AdminEmail`
+`admin@DotnetAgenticStarterkit.local` / `Admin!23456` (override with the `Seed:AdminEmail`
 and `Seed:AdminPassword` config keys; a password is required outside
 Development).
 

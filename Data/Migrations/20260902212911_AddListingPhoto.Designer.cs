@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using dotnet-agentic-starterkit.Data;
+using DotnetAgenticStarterkit.Data;
 
 #nullable disable
 
-namespace dotnet-agentic-starterkit.Data.Migrations
+namespace DotnetAgenticStarterkit.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     [Migration("20260902212911_AddListingPhoto")]
@@ -157,7 +157,7 @@ namespace dotnet-agentic-starterkit.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("dotnet-agentic-starterkit.Data.ApplicationUser", b =>
+            modelBuilder.Entity("DotnetAgenticStarterkit.Data.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -221,7 +221,7 @@ namespace dotnet-agentic-starterkit.Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("dotnet-agentic-starterkit.Data.JobRun", b =>
+            modelBuilder.Entity("DotnetAgenticStarterkit.Data.JobRun", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -245,7 +245,7 @@ namespace dotnet-agentic-starterkit.Data.Migrations
                     b.ToTable("JobRuns");
                 });
 
-            modelBuilder.Entity("dotnet-agentic-starterkit.Data.Listing", b =>
+            modelBuilder.Entity("DotnetAgenticStarterkit.Data.Listing", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -301,7 +301,7 @@ namespace dotnet-agentic-starterkit.Data.Migrations
                     b.ToTable("Listings");
                 });
 
-            modelBuilder.Entity("dotnet-agentic-starterkit.Data.StoredFile", b =>
+            modelBuilder.Entity("DotnetAgenticStarterkit.Data.StoredFile", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -337,7 +337,7 @@ namespace dotnet-agentic-starterkit.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("dotnet-agentic-starterkit.Data.ApplicationUser", null)
+                    b.HasOne("DotnetAgenticStarterkit.Data.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -346,7 +346,7 @@ namespace dotnet-agentic-starterkit.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("dotnet-agentic-starterkit.Data.ApplicationUser", null)
+                    b.HasOne("DotnetAgenticStarterkit.Data.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -361,7 +361,7 @@ namespace dotnet-agentic-starterkit.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("dotnet-agentic-starterkit.Data.ApplicationUser", null)
+                    b.HasOne("DotnetAgenticStarterkit.Data.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -370,7 +370,7 @@ namespace dotnet-agentic-starterkit.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("dotnet-agentic-starterkit.Data.ApplicationUser", null)
+                    b.HasOne("DotnetAgenticStarterkit.Data.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
