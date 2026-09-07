@@ -38,19 +38,33 @@ echo
 
 [ -z "$(git status --porcelain)" ] || { echo "working tree is dirty — commit or stash first" >&2; exit 1; }
 
+# Rewrite $1 -> $2 across every tracked text file. Skips binaries and the few
+# files that must keep the template's own identifier: this script and the
+# template-update tooling (they rewrite it themselves, at update time).
+rewrite_identifier() {
+    git ls-files -z \
+        | grep -zvE '(^|/)(bin|obj)/' \
+        | grep -zvE '\.(png|jpe?g|gif|ico|woff2?|ttf|eot)$' \
+        | grep -zvE '(^|/)(scripts/new-project|scripts/update-from-template|scripts/_guard-not-template)\.sh$' \
+        | grep -zvE '(^|/)docs/updating-from-template\.md$' \
+        | xargs -0 sed -i "s/${1}/${2}/g"
+}
+
 echo "==> Replacing identifier '$OLD' -> '$NEW' in tracked text files"
-git ls-files -z \
-    | grep -zvE '(^|/)(bin|obj)/' \
-    | grep -zvE '\.(png|jpe?g|gif|ico|woff2?|ttf|eot)$' \
-    | grep -zvE '(^|/)(scripts/new-project|scripts/update-from-template|scripts/_guard-not-template)\.sh$' \
-    | grep -zvE '(^|/)docs/updating-from-template\.md$' \
-    | grep -zvE '(^|/)fly\.toml$' \
-    | xargs -0 sed -i "s/${OLD}/${NEW}/g"
-# fly.toml's `app` name has different rules than a C# identifier (lowercase,
-# globally unique, chosen at `fly apps create` time) — excluded so the
-# blanket rewrite above never silently produces an invalid value there; its
-# placeholder ("your-app-name") is meant to be set by hand regardless (P5.3,
-# docs/deployment.md).
+rewrite_identifier "$OLD" "$NEW"
+
+# Also rewrite the all-lowercase form. The PascalCase sed above is
+# case-sensitive, so it misses lowercase-only names: compose.yaml's
+# ${APP_IMAGE:-…} fallback, fly.toml's `app` line, Docker/OCI image names in
+# docs. lower("$NEW") is exactly what MSBuildProjectName.ToLowerInvariant()
+# (DotnetAgenticStarterkit.csproj's ContainerRepository) and run-stack.sh's
+# `basename … | tr` both derive, so they all stay in sync after the rename.
+OLD_LC="$(printf '%s' "$OLD" | tr '[:upper:]' '[:lower:]')"
+NEW_LC="$(printf '%s' "$NEW" | tr '[:upper:]' '[:lower:]')"
+if [ "$OLD_LC" != "$OLD" ]; then
+    echo "==> Replacing lowercased identifier '$OLD_LC' -> '$NEW_LC' (Docker image names)"
+    rewrite_identifier "$OLD_LC" "$NEW_LC"
+fi
 
 echo "==> Renaming files/directories that contain '$OLD'"
 git ls-files | grep -F "$OLD" | while IFS= read -r f; do

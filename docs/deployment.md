@@ -174,20 +174,19 @@ secret either).
 
 ## P5.3 — CI/CD to a live target (Fly.io)
 
-**This is live.** `fly.toml`'s `app`/`primary_region` are filled in with
-this repo's own instance (`carlnaddy-DotnetAgenticStarterkit`, region `ams`) — not the
-generic placeholder this section otherwise describes — because this
-template repo runs its own deployment (`https://carlnaddy-DotnetAgenticStarterkit.fly.dev/`).
-Operational detail (what's live, where every secret actually lives, known
-issues) is in [`docs/live-deployment-runbook.md`](live-deployment-runbook.md);
-this section stays the generic walkthrough for what a **new** project
-spun from this template still needs to do for **its own** app.
+The template maintainer runs a live deployment of this repo on Fly.io;
+its operational detail (app/DB names, where every secret lives, known
+issues) is in [`docs/live-deployment-runbook.md`](live-deployment-runbook.md).
+This section is the generic walkthrough for what a **new** project spun
+from this template does for **its own** app.
 
-> ⚠️ **Starting a fresh project from this template? Replace `app =
-> "carlnaddy-DotnetAgenticStarterkit"` in `fly.toml` with your own `fly apps create`
-> name before you deploy.** `scripts/new-project.sh` deliberately never
-> touches `fly.toml` (see why below) — that value doesn't get rewritten
-> for you, and left alone it would point at the maintainer's own app.
+> **`fly.toml`'s `app` is `"dotnetagenticstarterkit"`** — a placeholder,
+> the lowercased project identifier (same form as `compose.yaml`'s
+> `${APP_IMAGE:-…}` fallback). `scripts/new-project.sh` rewrites it to
+> `lower("<NewName>")` on rename. Fly app names must also be globally
+> unique, so after the rename confirm the value is free (or change it)
+> before `fly apps create` — `flyctl deploy` in the workflow reads this
+> line for its target.
 
 ### How it's wired
 
@@ -216,15 +215,13 @@ fly.toml                       # Fly app config
   always gets `--image ghcr.io/<owner-repo, lowercased>:<sha>` explicitly. A
   bare `fly deploy` run by hand without `--image` would otherwise look for
   a Dockerfile, which this repo deliberately doesn't have. Its `app` line
-  is **excluded from `scripts/new-project.sh`'s identifier rewrite** — Fly
-  app names have different rules than a C# project name (lowercase,
-  globally unique, chosen at `fly apps create` time, not derivable from
-  anything in the repo), so the rename script leaves it alone rather than
-  produce a renamed-but-still-invalid value. It originally shipped as an
-  explicit placeholder (`"your-app-name"`); this repo's own `fly.toml` now
-  names its own live app (`carlnaddy-DotnetAgenticStarterkit`) instead, since that app
-  actually exists — **a new project must still replace that value with its
-  own app name by hand**, exactly as it would have replaced the placeholder.
+  ships as `"dotnetagenticstarterkit"` — a placeholder, the lowercased
+  project identifier, the same value `compose.yaml`'s `${APP_IMAGE:-…}`
+  fallback uses. `scripts/new-project.sh` rewrites it to `lower("<NewName>")`
+  along with every other lowercased occurrence. Fly app names must also be
+  globally unique, so after the rename the owner confirms the value is free
+  (or picks another) before `fly apps create` — the one Fly-specific step
+  the rename can't do for you.
 - **`/alive`** (P5.4 — liveness only, no DB dependency) is the configured
   health check, not `/health` — the right choice for "is this Machine up,"
   not "can it reach every dependency right now" (which a database blip
@@ -240,10 +237,9 @@ fly.toml                       # Fly app config
 bash scripts/install-flyctl.sh                # curl|sh on macOS/Linux, PowerShell installer on Windows
 fly auth login
 
-# 2. Create the app — pick a globally-unique name and a region; then
-#    REPLACE fly.toml's `app` (currently this repo's own instance,
-#    "carlnaddy-DotnetAgenticStarterkit") and `primary_region` with what you chose —
-#    don't deploy to the maintainer's app
+# 2. Create the app — `new-project.sh` set fly.toml's `app` to your
+#    lowercased project name; keep it if it's globally unique, otherwise
+#    pick another and update fly.toml's `app` (and `primary_region`) to match
 fly apps create <your-app-name>
 
 # 3. Postgres — Fly Postgres is the natural default (same "no separate
@@ -331,9 +327,9 @@ compose up` failed outright with `invalid reference format: repository name
 ... must be lowercase`. After the fix: `Contoso.Portal.csproj`'s
 `ContainerRepository` still self-derives correctly (unchanged from the
 template, since it's not a literal string the rename touches);
-`fly.toml`'s `app` line stayed the `"your-app-name"` placeholder (confirmed
-excluded from the rewrite); `deploy.yml`'s repository-computation step
-survived intact. `bash scripts/run-stack.sh --no-seed` on the renamed clone
+`fly.toml`'s `app` line was rewritten to the lowercased project name
+(`contoso.portal`), matching `compose.yaml`; `deploy.yml`'s
+repository-computation step survived intact. `bash scripts/run-stack.sh --no-seed` on the renamed clone
 → `docker compose ps` shows `contoso.portal:latest` running (not
 `DotnetAgenticStarterkit` or an invalid reference), `/alive` → `200`.
 

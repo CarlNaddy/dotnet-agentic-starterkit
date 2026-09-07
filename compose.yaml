@@ -51,7 +51,7 @@ services:
   # `db`/`mail` by their service names, not localhost — a different network
   # namespace than the host-side dev loop uses.
   app:
-    image: ${APP_IMAGE:-DotnetAgenticStarterkit}:latest
+    image: ${APP_IMAGE:-dotnetagenticstarterkit}:latest
     restart: unless-stopped
     depends_on:
       db:

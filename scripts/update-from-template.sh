@@ -161,7 +161,15 @@ fi
 # CR-stripped first; results are re-normalised via `git add --renormalize`.
 tmp="$(mktemp -d)"
 trap 'rm -rf "$tmp"' EXIT
-rw() { sed "s/${OLD}/${NEW}/g"; }        # OLD identifier -> project identifier
+# OLD identifier -> project identifier. Also the all-lowercase form: the
+# PascalCase sed is case-sensitive and would miss Docker/OCI image names
+# (compose.yaml's ${APP_IMAGE:-…} fallback), reintroducing the template's name
+# whenever an upstream diff touches that line. lower("$NEW") matches what
+# MSBuildProjectName.ToLowerInvariant() and run-stack.sh's `basename … | tr`
+# derive — see scripts/new-project.sh.
+OLD_LC="$(printf '%s' "$OLD" | tr '[:upper:]' '[:lower:]')"
+NEW_LC="$(printf '%s' "$NEW" | tr '[:upper:]' '[:lower:]')"
+rw() { sed -e "s/${OLD}/${NEW}/g" -e "s/${OLD_LC}/${NEW_LC}/g"; }
 norm() { sed 's/\r$//'; }               # drop CR so CRLF/LF don't false-conflict
 
 merged_ok=()

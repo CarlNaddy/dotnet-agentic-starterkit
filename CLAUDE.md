@@ -385,10 +385,12 @@ verification notes: [`docs/deployment.md`](docs/deployment.md).
   reasoning as P5.1's self-deriving `ContainerRepository`. `fly.toml` has no
   `[build]` section on purpose (this repo has no Dockerfile; the workflow
   always passes `--image` explicitly); its `app` line is a placeholder
-  (`"your-app-name"`), **excluded from `scripts/new-project.sh`'s identifier
-  rewrite** — Fly app names follow different rules than a C# project name
-  (lowercase, globally unique, chosen at `fly apps create` time), so a
-  renamed-but-still-invalid value would be worse than an honest placeholder.
+  (`"dotnetagenticstarterkit"`, the lowercased project identifier — same form
+  as `compose.yaml`'s `${APP_IMAGE:-…}` fallback). `scripts/new-project.sh`
+  rewrites it to `lower("<NewName>")` on rename, like every other lowercased
+  occurrence. Fly app names must also be globally unique, so after the rename
+  the owner still has to confirm the value is free (or change it) before
+  `fly apps create`.
   **The pipeline is written and ready; it hasn't deployed anywhere live
   yet** — that needs one-time account-side setup (create the Fly app,
   attach Postgres, set every secret, add the `FLY_API_TOKEN` repo secret)

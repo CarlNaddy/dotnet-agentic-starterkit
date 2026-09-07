@@ -5,13 +5,13 @@
 # account-side setup this depends on: creating the app, attaching Postgres,
 # and setting every secret below via `fly secrets set`.
 #
-# `app` below is a placeholder, not this repo's name — Fly app names must be
-# globally unique and lowercase/hyphens only (unlike a C# project name, which
-# can't be auto-derived into one correctly), so this file is deliberately
-# excluded from scripts/new-project.sh's identifier rewrite. Replace it with
-# whatever you `fly apps create` yourself.
+# `app` below is a placeholder — the lowercased project identifier, same form as
+# compose.yaml's ${APP_IMAGE:-…} fallback. scripts/new-project.sh rewrites it to
+# lower("<NewName>") on rename. Fly app names must also be globally unique, so
+# after `new-project.sh` confirm this value is free (`fly apps create` will
+# reject it otherwise) and change it if needed — it's yours to own from there.
 
-app = "carlnaddy-DotnetAgenticStarterkit"
+app = "dotnetagenticstarterkit"
 primary_region = "ams"        # Amsterdam, Netherlands
 
 [build]
