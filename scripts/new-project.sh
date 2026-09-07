@@ -158,6 +158,39 @@ dotnet tool restore \
     || tools_note="dotnet tools — 'dotnet tool restore' failed, rerun manually:  dotnet tool restore"
 
 echo
+echo "==> Local database — Postgres via Docker + dev connection string"
+# compose.yaml's db service and the host dev-loop connection string
+# (user-secrets, plan P1.3) must agree on database / user / password. The
+# identifier rewrite above already put $NEW into compose.yaml's POSTGRES_DB /
+# POSTGRES_USER, so read all three values straight back out of it — the secret
+# then can't drift from what the container actually runs with. Best-effort and
+# non-fatal, same as the tool-restore / AI-tooling / flyctl steps: a scripted
+# rename shouldn't abort because Docker happens to be down.
+db_note=""
+compose_env() { [ -f compose.yaml ] && sed -n "s/^[[:space:]]*$1:[[:space:]]*//p" compose.yaml | head -n1; }
+pg_db="$(compose_env POSTGRES_DB || true)"
+pg_user="$(compose_env POSTGRES_USER || true)"
+pg_pw="$(compose_env POSTGRES_PASSWORD || true)"
+
+if [ -z "$pg_db" ] || [ -z "$pg_user" ] || [ -z "$pg_pw" ]; then
+    db_note="local DB — couldn't read POSTGRES_* from compose.yaml; set the connection string and start Postgres by hand (see the manual steps below)"
+else
+    conn="Host=localhost;Port=5432;Database=${pg_db};Username=${pg_user};Password=${pg_pw}"
+    echo "    matching compose.yaml: Database=${pg_db} Username=${pg_user} Password=***"
+    if dotnet user-secrets set "ConnectionStrings:Default" "$conn" --project "${ROOT}/${NEW}.csproj" >/dev/null 2>&1; then
+        echo "    set user-secret ConnectionStrings:Default"
+    else
+        db_note="local DB — 'dotnet user-secrets set' failed; rerun in the folder with ${NEW}.csproj:  dotnet user-secrets set \"ConnectionStrings:Default\" \"${conn}\""
+    fi
+    if command -v docker >/dev/null 2>&1 && docker compose up -d db; then
+        echo "    started Postgres (docker compose up -d db)"
+    else
+        nl=$'\n'
+        db_note="${db_note:+${db_note}${nl}}local DB — 'docker compose up -d db' did not run (Docker not available?); start it before 'dotnet run -- seed'"
+    fi
+fi
+
+echo
 echo "==> AI tooling — installing Claude Code plugins/skills"
 # .claude/settings.json carries the dotnet*/mudblazor plugin list over unchanged
 # (no 'DotnetAgenticStarterkit' identifier in it), so it already declares what this new
@@ -202,19 +235,24 @@ manual steps:
   1. CLAUDE.md — retitle; replace the "Reuse — starting a new project" section
      and parity-plan references with your own notes. Keep Stack, Data access,
      MudBlazor rules, Conventions, Tests, Localization.
-  2. compose.yaml — set POSTGRES_DB / POSTGRES_USER / POSTGRES_PASSWORD.
-  3. In the folder containing ${NEW}.csproj:
+  2. Local database — the "==> Local database" step above already started
+     Postgres (docker compose up -d db) and set the user-secret
+     ConnectionStrings:Default to match compose.yaml's db service
+     (Database/Username = ${NEW}, Password = the dev_only_change_me
+     placeholder). Local dev only. To use a different password, edit
+     compose.yaml's POSTGRES_PASSWORD, then re-run:
+       docker compose down -v && docker compose up -d db
        dotnet user-secrets set "ConnectionStrings:Default" \\
-         "Host=localhost;Port=5432;Database=<db>;Username=<user>;Password=<pw>"
-  4. docker compose up -d db
-  5. dotnet format ${NEW}.slnx && dotnet build && dotnet test
-  6. (optional) start from an empty skeleton instead of keeping the sample:
+         "Host=localhost;Port=5432;Database=${NEW};Username=${NEW};Password=<new-pw>"
+     (If that step reported a problem, do both by hand now.)
+  3. dotnet format ${NEW}.slnx && dotnet build && dotnet test
+  4. (optional) start from an empty skeleton instead of keeping the sample:
        bash scripts/remove-sample.sh
      (regenerates Data/Migrations from scratch — safe any time, doesn't need
      a real database connection yet)
-  7. (optional) spec-driven development:  bash scripts/setup-openspec.sh
+  5. (optional) spec-driven development:  bash scripts/setup-openspec.sh
        then, in Claude Code:  /opsx:propose <feature>  ->  /opsx:apply
-  8. Remove the templating helpers you no longer need:
+  6. Remove the templating helpers you no longer need:
        git rm scripts/new-project.sh scripts/new-project.ps1 \\
          scripts/_guard-not-template.sh docs/new-project.md
      Keep scripts/remove-sample.sh until you've actually run it (or decided to
@@ -223,7 +261,7 @@ manual steps:
      scripts/install-flyctl.sh, scripts/setup-openspec.sh, docs/ef-migrations.md,
      and — to pull future template updates — scripts/update-from-template.sh,
      docs/updating-from-template.md, .template-version.
-  9. git add -A && git commit -m "Initialize from template"
+  7. git add -A && git commit -m "Initialize from template"
 
 Later, to deploy (Fly.io, P5.3):
      fly auth login && fly apps create <name>   # then set fly.toml's \`app\`
@@ -237,5 +275,6 @@ Later, to pull template changes into this project:
    See docs/updating-from-template.md.
 EOF
 [ -z "$tools_note" ] || echo "$tools_note"
+[ -z "$db_note" ] || echo "$db_note"
 [ -z "$ai_note" ] || echo "$ai_note"
 [ -z "$fly_note" ] || echo "$fly_note"

@@ -121,30 +121,31 @@ migrations, or seed data — like `rails new`.
 
 ## Step 3 — Point at your database
 
-Edit `compose.yaml` — set the Postgres identifiers (and the host port if 5432 is
-taken):
+`new-project.sh` already did this: its **"==> Local database"** step reads
+`POSTGRES_DB` / `POSTGRES_USER` / `POSTGRES_PASSWORD` back out of the renamed
+`compose.yaml`, sets the `ConnectionStrings:Default` user-secret to match (run
+against `Contoso.Portal.csproj`), and runs `docker compose up -d db`. The
+rename leaves the identifiers as `Contoso.Portal` and the password as the
+`dev_only_change_me` placeholder — fine for local dev.
 
-```yaml
-    environment:
-      POSTGRES_DB: contosoportal
-      POSTGRES_USER: contosoportal
-      POSTGRES_PASSWORD: dev_only_change_me
-    ports:
-      - "5432:5432"
-```
-
-Store the dev connection string in user-secrets (run in the folder with
-`Contoso.Portal.csproj`):
+Only if you want a different password (or the script reported a problem — check
+its output / the `local DB —` line at the very end), edit `compose.yaml` and
+re-run both by hand:
 
 ```bash
+docker compose down -v && docker compose up -d db
 dotnet user-secrets set "ConnectionStrings:Default" \
-  "Host=localhost;Port=5432;Database=contosoportal;Username=contosoportal;Password=dev_only_change_me"
+  "Host=localhost;Port=5432;Database=Contoso.Portal;Username=Contoso.Portal;Password=<new-pw>"
 ```
+
+Change the host port too if 5432 is taken (`compose.yaml` `ports:` and the
+`Port=` in the connection string).
 
 ## Step 4 — Bring it up
 
+The database is already up from Step 3. Build and run:
+
 ```bash
-docker compose up -d db
 dotnet format Contoso.Portal.slnx   # normalise line endings from the rename
 dotnet build
 dotnet test                         # xUnit v3 via MTP
