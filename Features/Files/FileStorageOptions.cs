@@ -1,4 +1,4 @@
-namespace dotnetskills.Features.Files;
+namespace dotnet-agentic-starterkit.Features.Files;
 
 /// <summary>
 /// File storage settings (parity plan P4.4), bound from config section

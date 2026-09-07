@@ -1,8 +1,8 @@
-using dotnetskills.Data;
-using dotnetskills.Features.Listings;
+using dotnet-agentic-starterkit.Data;
+using dotnet-agentic-starterkit.Features.Listings;
 using Microsoft.AspNetCore.Mvc;
 
-namespace dotnetskills.Endpoints;
+namespace dotnet-agentic-starterkit.Endpoints;
 
 /// <summary>
 /// JSON API over <see cref="Listing"/> — reads (P4.3's worked surface for

@@ -1,7 +1,7 @@
 @page "/listings/new"
 @attribute [Authorize(Policy = "ListingsWriter")]
-@using dotnetskills.Features.Jobs
-@using dotnetskills.Features.Listings
+@using dotnet-agentic-starterkit.Features.Jobs
+@using dotnet-agentic-starterkit.Features.Listings
 @using Hangfire
 @inject IDbContextFactory<AppDbContext> DbFactory
 @inject IBackgroundJobClient BackgroundJobs

@@ -1,6 +1,6 @@
-using dotnetskills.Data;
+using dotnet-agentic-starterkit.Data;
 
-namespace dotnetskills.Features.Files;
+namespace dotnet-agentic-starterkit.Features.Files;
 
 /// <summary>
 /// File storage abstraction (parity plan P4.4, ActiveStorage analog) — the

@@ -18,16 +18,16 @@ jobs:
           global-json-file: global.json
 
       - name: Restore
-        run: dotnet restore dotnetskills.slnx
+        run: dotnet restore dotnet-agentic-starterkit.slnx
 
       - name: Build
-        run: dotnet build dotnetskills.slnx --no-restore -c Release
+        run: dotnet build dotnet-agentic-starterkit.slnx --no-restore -c Release
 
       # Docker is preinstalled on ubuntu-latest, so the Testcontainers PostgreSQL
       # tests (P2.3) run here with no extra service wiring.
       - name: Test + coverage
         run: >
-          dotnet test dotnetskills.slnx --no-build -c Release
+          dotnet test dotnet-agentic-starterkit.slnx --no-build -c Release
           -- --coverage --coverage-output-format cobertura --coverage-output coverage.cobertura.xml
 
       - name: Coverage summary

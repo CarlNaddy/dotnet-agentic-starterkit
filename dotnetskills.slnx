@@ -1,6 +1,0 @@
-<Solution>
-  <Folder Name="/tests/">
-    <Project Path="tests/dotnetskills.Tests/dotnetskills.Tests.csproj" />
-  </Folder>
-  <Project Path="dotnetskills.csproj" />
-</Solution>

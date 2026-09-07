@@ -1,4 +1,4 @@
-# dotnetskills
+# dotnet-agentic-starterkit
 
 ASP.NET Core + **Blazor Web App** with **MudBlazor** for all UI.
 
@@ -20,13 +20,13 @@ ASP.NET Core + **Blazor Web App** with **MudBlazor** for all UI.
 | Email | MailKit via ASP.NET Core Identity's `IEmailSender<TUser>`; Razor-component templates rendered by `HtmlRenderer`; dev sink `smtp4dev` (`compose.yaml`); confirm-before-login + forgot/reset password wired (parity plan P4.2) |
 | Caching / rate limiting | First-party only: `HybridCache` (in-memory, in front of the `Listings` JSON API), `OutputCache`, `AddRateLimiter`; a Redis `IDistributedCache` backplane is vNext (parity plan P4.3) |
 | File storage | `IFileStore` seam, `LocalDiskFileStore` today, config-driven provider switch for a blob provider later; worked pattern is a `Listing` photo (parity plan P4.4) |
-| Tests | xUnit v3 on the Microsoft Testing Platform — `tests/dotnetskills.Tests/` |
+| Tests | xUnit v3 on the Microsoft Testing Platform — `tests/dotnet-agentic-starterkit.Tests/` |
 | Deployment | SDK container publish (`dotnet publish -t:PublishContainer`, no Dockerfile); `bash scripts/run-stack.sh` = full local stack in one command; Data Protection keys in Postgres, `/health` + `/alive` (parity plan P5.1–P5.2, P5.4); CI/CD to a live target open (P5.3) |
 
 ## Build / run / test
 
-Solution `dotnetskills.slnx` holds the web app (`dotnetskills.csproj`) and the
-test project (`tests/dotnetskills.Tests/`). Package versions are centrally
+Solution `dotnet-agentic-starterkit.slnx` holds the web app (`dotnet-agentic-starterkit.csproj`) and the
+test project (`tests/dotnet-agentic-starterkit.Tests/`). Package versions are centrally
 managed in `Directory.Packages.props`.
 
 ```bash
@@ -98,7 +98,7 @@ Full render-mode × auth matrix and pitfalls: `dotnet-blazor:configure-auth`.
 - **Admin seed (P3.6):** `dotnet run -- seed` also runs
   `Data/Seed/IdentitySeeder.cs` — creates the `Admin` role and a dev admin user
   if missing (idempotent). Credentials from config keys `Seed:AdminEmail` /
-  `Seed:AdminPassword`; the dev default is `admin@dotnetskills.local` /
+  `Seed:AdminPassword`; the dev default is `admin@dotnet-agentic-starterkit.local` /
   `Admin!23456`. Outside Development a `Seed:AdminPassword` **must** be supplied
   — the seeder throws rather than use the built-in default.
 - **Identity UI:** hand-authored Razor pages under `Components/Account/`
@@ -190,7 +190,7 @@ never touches it. Decisions, the worked pattern, and how to add a new job:
   a substitute for an actual audit trail.
 - **Testing:** job bodies are ordinary `AppDbContext` consumers — test them the
   P2.3 way, against real Postgres via `DatabaseTest`
-  (`tests/dotnetskills.Tests/Features/Jobs/ListingJobsTests.cs` is the worked
+  (`tests/dotnet-agentic-starterkit.Tests/Features/Jobs/ListingJobsTests.cs` is the worked
   example). Don't test Hangfire's own scheduling/dispatch.
 
 ## Email
@@ -228,7 +228,7 @@ worked pattern, and how to add a new email:
   not driven by a page here.
 - **Testing:** `RazorEmailRenderer` is pure and deterministic (no SMTP, no
   database) — tested directly
-  (`tests/dotnetskills.Tests/Features/Email/RazorEmailRendererTests.cs`).
+  (`tests/dotnet-agentic-starterkit.Tests/Features/Email/RazorEmailRendererTests.cs`).
   Don't test MailKit's own SMTP behavior; the full send path was verified
   manually end-to-end (see `docs/email.md`), not as an automated test.
 
@@ -256,7 +256,7 @@ Decisions and the worked pattern: [`docs/caching.md`](docs/caching.md).
   handler. A cache with no invalidation path ships stale data — don't add a
   cached read without also wiring its invalidation.
 - **Testing:** `ListingQueriesTests`
-  (`tests/dotnetskills.Tests/Features/Listings/`, P2.3 pattern) proves
+  (`tests/dotnet-agentic-starterkit.Tests/Features/Listings/`, P2.3 pattern) proves
   caching *and* invalidation against real Postgres. Don't test the
   framework's own `HybridCache`/`OutputCache`/`AddRateLimiter` internals —
   the `Age` header and the rate limiter's `429` were verified manually
@@ -296,7 +296,7 @@ and the worked pattern: [`docs/file-storage.md`](docs/file-storage.md).
   lowering Kestrel's default globally would silently cap every other
   endpoint too.
 - **Testing:** `LocalDiskFileStoreTests` and `ListingPhotoServiceTests`
-  (`tests/dotnetskills.Tests/Features/Files/` and `.../Listings/`) test
+  (`tests/dotnet-agentic-starterkit.Tests/Features/Files/` and `.../Listings/`) test
   against a *real* `LocalDiskFileStore` (a throwaway temp dir + real
   Postgres), not a fake — matching how the rest of this suite avoids mocks.
 
@@ -323,7 +323,7 @@ Official Microsoft container guidance throughout (parity plan **P5**) — no
 Dockerfile to maintain, no Aspire. Decisions, the worked commands, and full
 verification notes: [`docs/deployment.md`](docs/deployment.md).
 
-- **Container image (P5.1):** `dotnet publish dotnetskills.csproj
+- **Container image (P5.1):** `dotnet publish dotnet-agentic-starterkit.csproj
   -t:PublishContainer -c Release` — the SDK's built-in container publish
   (`Microsoft.NET.Build.Containers`), not a hand-maintained `Dockerfile`.
   Base image/tag resolve from `TargetFramework`
@@ -496,11 +496,11 @@ Scaffolding alternative: `dotnet new install MudBlazor.Templates`.
 
 ### Project layout (decided in P0.2)
 
-**Single project.** `dotnetskills.csproj` is the whole app; organize by concern
+**Single project.** `dotnet-agentic-starterkit.csproj` is the whole app; organize by concern
 in folders, not by extracting class-library projects.
 
 ```
-dotnetskills.csproj
+dotnet-agentic-starterkit.csproj
   Components/    Blazor UI (Layout/, Pages/, shared components)
   Data/          AppDbContext, entities, EF Core migrations, seeders
   Features/      application logic — one folder per feature (services, handlers)
@@ -531,7 +531,7 @@ project.
   (IDExxxx) rules run in the IDE and `dotnet format`, not the build —
   `EnforceCodeStyleInBuild` stays `false`; flip it to `true` once
   `dotnet format --verify-no-changes` runs clean (not a blocker).
-- Format check: `dotnet format dotnetskills.slnx --verify-no-changes`.
+- Format check: `dotnet format dotnet-agentic-starterkit.slnx --verify-no-changes`.
 - **Central package management** (`Directory.Packages.props`,
   `ManagePackageVersionsCentrally=true` + transitive pinning): every version
   lives there; `.csproj` `PackageReference`s carry no `Version`.
@@ -539,7 +539,7 @@ project.
 ### Naming & style
 
 - File-scoped namespaces; namespace mirrors the folder
-  (`dotnetskills.Features.Listings`).
+  (`dotnet-agentic-starterkit.Features.Listings`).
 - One public type per file; file name matches the type.
 - `_camelCase` private fields; `PascalCase` types / members / constants;
   `camelCase` locals & parameters; `I`-prefixed interfaces. Async methods end
@@ -599,8 +599,8 @@ project.
 
 ### Tests
 
-- One test project: `tests/dotnetskills.Tests/` (xUnit v3, `namespace
-  dotnetskills.Tests.*` mirroring the folder). Run with `dotnet test`.
+- One test project: `tests/dotnet-agentic-starterkit.Tests/` (xUnit v3, `namespace
+  dotnet-agentic-starterkit.Tests.*` mirroring the folder). Run with `dotnet test`.
 - **MTP mode:** `global.json` opts `dotnet test` into the Microsoft Testing
   Platform (`"test": { "runner": "Microsoft.Testing.Platform" }`); the test
   project is `OutputType=Exe`. No `Microsoft.NET.Test.Sdk`.
@@ -610,7 +610,7 @@ project.
 - Test method names: `Method_under_test_does_x` (underscores; CA1707 is off).
   Assertions must be deterministic — no clock, network, process, or real
   filesystem.
-- **Test data:** fluent builders under `tests/dotnetskills.Tests/TestData/`, one
+- **Test data:** fluent builders under `tests/dotnet-agentic-starterkit.Tests/TestData/`, one
   per entity (`ListingBuilder` is the worked example — P2.2). Valid-by-default,
   `With*` methods to pin the fields a test cares about, `Build()` / `BuildMany(n)`
   / static `Valid()`. Defaults come from `Bogus` with a **fixed seed** so
@@ -619,7 +619,7 @@ project.
 - **Database tests (P2.3):** the tier that hits `AppDbContext` runs against **real
   PostgreSQL in a throwaway `Testcontainers` container** — never SQLite / EF
   in-memory (parity plan P1.1: one provider everywhere). Infrastructure in
-  `tests/dotnetskills.Tests/Infrastructure/` — `PostgresFixture` (one container
+  `tests/dotnet-agentic-starterkit.Tests/Infrastructure/` — `PostgresFixture` (one container
   per run, migrations applied once, shared via `[Collection("database")]`),
   `DatabaseTest` base class (`CreateContext()`, per-test table wipe via
   `ResetAsync`, `Ct` token). `ListingPersistenceTests` is the worked example.
@@ -667,7 +667,7 @@ Data Protection keys), so they can't be deleted piecemeal.
 `scripts/new-project.sh` and `scripts/remove-sample.sh` (the latter runnable
 standalone too) both refuse to run — via a shared `scripts/_guard-not-template.sh`
 — if this repo's `origin` remote is still the canonical
-`github.com/CarlNaddy/dotnetskills`: a project created the documented way (GitHub's
+`github.com/CarlNaddy/dotnet-agentic-starterkit`: a project created the documented way (GitHub's
 "Use this template", then clone *that* new repo) never has this origin, only the
 template repo itself does, so the check only ever fires by mistake. Bypass with
 `I_UNDERSTAND_THIS_IS_THE_TEMPLATE=1`, for genuine template-maintenance work only.
@@ -675,6 +675,6 @@ template repo itself does, so the check only ever fires by mistake. Bypass with
 `new-project.sh` records the template commit it branched from in
 `.template-version`; a spun-off project pulls later template changes with
 `bash scripts/update-from-template.sh` (diffs the template forward from that
-baseline, rewrites the `dotnetskills` identifier in the diff, 3-way applies;
+baseline, rewrites the `dotnet-agentic-starterkit` identifier in the diff, 3-way applies;
 never touches `README.md` / `CLAUDE.md` / `compose.yaml`). See
 [`docs/updating-from-template.md`](docs/updating-from-template.md).

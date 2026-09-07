@@ -1,10 +1,10 @@
-using dotnetskills.Features.Jobs;
-using dotnetskills.Tests.Infrastructure;
-using dotnetskills.Tests.TestData;
+using dotnet-agentic-starterkit.Features.Jobs;
+using dotnet-agentic-starterkit.Tests.Infrastructure;
+using dotnet-agentic-starterkit.Tests.TestData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace dotnetskills.Tests.Features.Jobs;
+namespace dotnet-agentic-starterkit.Tests.Features.Jobs;
 
 /// <summary>
 /// Database-tier tests (parity plan P4.1) for the worked background-job

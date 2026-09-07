@@ -1,8 +1,8 @@
-using dotnetskills.Data;
+using dotnet-agentic-starterkit.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
-namespace dotnetskills.Features.Files;
+namespace dotnet-agentic-starterkit.Features.Files;
 
 /// <summary>
 /// <see cref="IFileStore"/> over the local filesystem — the only provider

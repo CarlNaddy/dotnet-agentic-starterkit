@@ -8,7 +8,7 @@ decision).
 ## P5.1 — Container image: the SDK's built-in container publish
 
 ```bash
-dotnet publish dotnetskills.csproj -t:PublishContainer -c Release
+dotnet publish dotnet-agentic-starterkit.csproj -t:PublishContainer -c Release
 ```
 
 **Not a hand-maintained `Dockerfile`.** The .NET SDK's container publish
@@ -27,13 +27,13 @@ watch run` dev-server ports from `launchSettings.json`.
 
 ### The repository name self-derives — it isn't a literal string anywhere
 
-`dotnetskills.csproj`:
+`dotnet-agentic-starterkit.csproj`:
 
 ```xml
 <ContainerRepository>$(MSBuildProjectName.ToLowerInvariant())</ContainerRepository>
 ```
 
-**Not** `<ContainerRepository>dotnetskills</ContainerRepository>`, even
+**Not** `<ContainerRepository>dotnet-agentic-starterkit</ContainerRepository>`, even
 though that's what this repo would resolve to either way. The reason is
 this template's own rename flow: `scripts/new-project.sh` produces
 PascalCase project names (`Contoso.Portal`, the documented example) by
@@ -80,7 +80,7 @@ bash scripts/run-stack.sh --no-seed    # build + start only
 bash scripts/run-stack.sh --down       # stop everything
 ```
 
-`compose.yaml`'s `app` service uses `image: ${APP_IMAGE:-dotnetskills}:latest`
+`compose.yaml`'s `app` service uses `image: ${APP_IMAGE:-dotnet-agentic-starterkit}:latest`
 — the image P5.1 builds — **not** a Dockerfile `build:` section, so `docker
 compose up` alone can't build it from source (Compose's own build mechanism
 expects a Dockerfile, and P5.1 deliberately doesn't have one).
@@ -92,7 +92,7 @@ container publish, then `docker compose up -d` (which picks up `$APP_IMAGE`
 from the environment), then seeds (`docker compose run --rm app seed` — the
 same `dotnet run -- seed` verb dispatch, reached by appending `seed` to the
 image's exec-form `ENTRYPOINT ["dotnet", "/app/<name>.dll"]`; idempotent,
-safe to rerun). The `:dotnetskills` fallback in `${APP_IMAGE:-dotnetskills}`
+safe to rerun). The `:dotnet-agentic-starterkit` fallback in `${APP_IMAGE:-dotnet-agentic-starterkit}`
 only covers a bare `docker compose up` run against this *unrenamed* template
 — always use `run-stack.sh`, which sets `$APP_IMAGE` correctly regardless of
 what the project's been renamed to.
@@ -112,7 +112,7 @@ what the project's been renamed to.
 ### Data Protection keys persist in Postgres, not in memory
 
 `AppDbContext` implements `IDataProtectionKeyContext`;
-`AddDataProtection().SetApplicationName("dotnetskills").PersistKeysToDbContext<AppDbContext>()`
+`AddDataProtection().SetApplicationName("dotnet-agentic-starterkit").PersistKeysToDbContext<AppDbContext>()`
 (`Program.cs`) stores the key ring in a new `DataProtectionKeys` table
 instead of the in-memory default, which silently regenerates a fresh key
 ring on every restart — invalidating every issued auth cookie and
@@ -122,7 +122,7 @@ pattern as everything else in this app (Hangfire, caching): Postgres, not a
 new store.
 
 `SetApplicationName` matters specifically because `dotnet watch run` (host,
-content root `C:\...\dotnetskills`) and the container (content root `/app`)
+content root `C:\...\dotnet-agentic-starterkit`) and the container (content root `/app`)
 have different `ContentRootPath`s, which Data Protection otherwise folds
 into the key ring's identity — without a fixed name, keys written by one
 environment wouldn't be recognized as belonging to "this app" by the other,
@@ -175,16 +175,16 @@ secret either).
 ## P5.3 — CI/CD to a live target (Fly.io)
 
 **This is live.** `fly.toml`'s `app`/`primary_region` are filled in with
-this repo's own instance (`carlnaddy-dotnetskills`, region `ams`) — not the
+this repo's own instance (`carlnaddy-dotnet-agentic-starterkit`, region `ams`) — not the
 generic placeholder this section otherwise describes — because this
-template repo runs its own deployment (`https://carlnaddy-dotnetskills.fly.dev/`).
+template repo runs its own deployment (`https://carlnaddy-dotnet-agentic-starterkit.fly.dev/`).
 Operational detail (what's live, where every secret actually lives, known
 issues) is in [`docs/live-deployment-runbook.md`](live-deployment-runbook.md);
 this section stays the generic walkthrough for what a **new** project
 spun from this template still needs to do for **its own** app.
 
 > ⚠️ **Starting a fresh project from this template? Replace `app =
-> "carlnaddy-dotnetskills"` in `fly.toml` with your own `fly apps create`
+> "carlnaddy-dotnet-agentic-starterkit"` in `fly.toml` with your own `fly apps create`
 > name before you deploy.** `scripts/new-project.sh` deliberately never
 > touches `fly.toml` (see why below) — that value doesn't get rewritten
 > for you, and left alone it would point at the maintainer's own app.
@@ -222,7 +222,7 @@ fly.toml                       # Fly app config
   anything in the repo), so the rename script leaves it alone rather than
   produce a renamed-but-still-invalid value. It originally shipped as an
   explicit placeholder (`"your-app-name"`); this repo's own `fly.toml` now
-  names its own live app (`carlnaddy-dotnetskills`) instead, since that app
+  names its own live app (`carlnaddy-dotnet-agentic-starterkit`) instead, since that app
   actually exists — **a new project must still replace that value with its
   own app name by hand**, exactly as it would have replaced the placeholder.
 - **`/alive`** (P5.4 — liveness only, no DB dependency) is the configured
@@ -242,7 +242,7 @@ fly auth login
 
 # 2. Create the app — pick a globally-unique name and a region; then
 #    REPLACE fly.toml's `app` (currently this repo's own instance,
-#    "carlnaddy-dotnetskills") and `primary_region` with what you chose —
+#    "carlnaddy-dotnet-agentic-starterkit") and `primary_region` with what you chose —
 #    don't deploy to the maintainer's app
 fly apps create <your-app-name>
 
@@ -284,9 +284,9 @@ happen on the next push, not something to fake here.
 
 ## Verified end-to-end (2026-09-03)
 
-**P5.1**, standalone, connected to the existing `dotnetskills_default`
+**P5.1**, standalone, connected to the existing `dotnet-agentic-starterkit_default`
 compose network: `dotnet publish -t:PublishContainer` → image builds
-(`docker images dotnetskills` confirms it, 381MB) → `docker run` with
+(`docker images dotnet-agentic-starterkit` confirms it, 381MB) → `docker run` with
 `ConnectionStrings__Default` pointing at the `db` service → home page and
 `/listings` both `200`, `/api/listings` returns real seeded data through
 the container network — genuine Postgres connectivity proven, not just "the
@@ -335,18 +335,18 @@ template, since it's not a literal string the rename touches);
 excluded from the rewrite); `deploy.yml`'s repository-computation step
 survived intact. `bash scripts/run-stack.sh --no-seed` on the renamed clone
 → `docker compose ps` shows `contoso.portal:latest` running (not
-`dotnetskills` or an invalid reference), `/alive` → `200`.
+`dotnet-agentic-starterkit` or an invalid reference), `/alive` → `200`.
 
 ## Verified end-to-end (2026-09-04) — the live deploy itself
 
 **P5.3 has now actually deployed live**, not just "written and ready":
-`carlnaddy-dotnetskills` created, `carlnaddy-dotnetskills-db` (single-node
+`carlnaddy-dotnet-agentic-starterkit` created, `carlnaddy-dotnet-agentic-starterkit-db` (single-node
 Fly Postgres, `ams`) created and attached, `[deploy] release_command =
 "seed"` added to `fly.toml` so migrations + the idempotent seed run before
 every release, and a manual first deploy (`flyctl deploy --image
-registry.fly.io/carlnaddy-dotnetskills:bootstrap`) served real traffic —
+registry.fly.io/carlnaddy-dotnet-agentic-starterkit:bootstrap`) served real traffic —
 `/`, `/health`, `/alive` all `200` at
-<https://carlnaddy-dotnetskills.fly.dev/>. Full operational detail (where
+<https://carlnaddy-dotnet-agentic-starterkit.fly.dev/>. Full operational detail (where
 every credential actually lives, cost, cheat sheet): `docs/live-deployment-runbook.md`.
 
 Two real gotchas, found only by actually deploying, not by reviewing the

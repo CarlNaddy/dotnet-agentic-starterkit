@@ -3,8 +3,8 @@
 Your project was created with GitHub's **Use this template**. That copies the
 file tree once, with **no fork relationship** — so there is no "Sync fork" button
 and `git pull` has nothing upstream to pull. On top of that,
-`scripts/new-project.sh` renamed the `dotnetskills` identifier (and the
-`*.csproj` / `*.slnx` / `tests/dotnetskills.Tests/` paths) throughout your repo,
+`scripts/new-project.sh` renamed the `dotnet-agentic-starterkit` identifier (and the
+`*.csproj` / `*.slnx` / `tests/dotnet-agentic-starterkit.Tests/` paths) throughout your repo,
 so the template's `main` and your `main` share no history and disagree on every
 file that mentioned the old name.
 
@@ -17,7 +17,7 @@ file that mentioned the old name.
    `.template-version` (written by `new-project.sh`).
 3. `git diff baseline..template/main` — exactly the template's changes since you
    branched off.
-4. Rewrites `dotnetskills` → your project identifier in that diff, in both the
+4. Rewrites `dotnet-agentic-starterkit` → your project identifier in that diff, in both the
    file contents and the `a/… b/…` path lines.
 5. `git apply` — a 3-way merge when the blobs allow it, otherwise a per-hunk
    apply that drops `*.rej` files for whatever won't land.
@@ -100,7 +100,7 @@ A clean run then rewrites `.template-version` and later runs need no `--base`.
 
 ## Notes
 
-- The identifier rewrite is a literal `s/dotnetskills/<your-id>/g`. It's safe for
+- The identifier rewrite is a literal `s/dotnet-agentic-starterkit/<your-id>/g`. It's safe for
   identifiers made of letters, digits, `.` and `_` (e.g. `Contoso.Portal`). If yours
   contains a `/`, `&` or `\`, patch by hand.
 - Run it on a clean working tree, on a branch — it's a review-then-merge step,

@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace dotnetskills.Data;
+namespace dotnet-agentic-starterkit.Data;
 
 /// <summary>
 /// The application's Entity Framework Core context. Also the ASP.NET Core

@@ -1,6 +1,6 @@
-using dotnetskills.Features.Files;
+using dotnet-agentic-starterkit.Features.Files;
 
-namespace dotnetskills.Endpoints;
+namespace dotnet-agentic-starterkit.Endpoints;
 
 /// <summary>
 /// Serves whatever <see cref="IFileStore"/> holds (parity plan P4.4) —

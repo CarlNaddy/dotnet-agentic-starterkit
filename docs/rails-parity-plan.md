@@ -29,7 +29,7 @@ actually needing it, and none currently does; P4.6 (observability) is
 deferred to vNext.** **P5 (deployment) is nearly done — P5.1 (container
 image), P5.2 (full local stack), and P5.4 (production hardening) done;
 P5.3 (CI/CD to a live target) has now deployed live
-(`https://carlnaddy-dotnetskills.fly.dev/`) via the manual path — the
+(`https://carlnaddy-dotnet-agentic-starterkit.fly.dev/`) via the manual path — the
 automated CI/CD path (a push to `main` triggering `deploy.yml`) is still
 unconfirmed, and the Fly account's trial has ended and needs a payment
 method before the deployment is reliable (see
@@ -51,7 +51,7 @@ P6.3 (`.http` request collections) are both complete.
 | 4 | Authenticate & authorize users | ✅ register/login/logout/manage, role/policy authorization, seeded dev admin, config-gated OAuth2 (Google/Microsoft/GitHub) all wired; OAuth provider round-trip needs real credentials (operational, not code) |
 | 5 | Jobs / email / cache / file storage / real-time | 🟡 jobs (Hangfire, P4.1), email (MailKit, P4.2), caching/rate limiting (first-party, P4.3), and file storage (`IFileStore`, P4.4) done; real-time open (P4.5, only if a feature needs it) |
 | 6 | Model + integration + component tests, reusable test data | ✅ at parity (ahead of Rails — see P2) |
-| 7 | One-command local stack + one deploy pipeline | 🟡 `bash scripts/run-stack.sh` — app + Postgres + mail sink, one command; persisted Data Protection keys + health checks (P5.1–P5.2, P5.4); live at `carlnaddy-dotnetskills.fly.dev` via manual deploy (P5.3) — automated CI/CD path unconfirmed, Fly trial needs a payment method |
+| 7 | One-command local stack + one deploy pipeline | 🟡 `bash scripts/run-stack.sh` — app + Postgres + mail sink, one command; persisted Data Protection keys + health checks (P5.1–P5.2, P5.4); live at `carlnaddy-dotnet-agentic-starterkit.fly.dev` via manual deploy (P5.3) — automated CI/CD path unconfirmed, Fly trial needs a payment method |
 | 8 | Start a new project from the baseline in one step | ✅ template-repo + script route (P7.1); one-command `dotnet new` (P7.2) deferred to (vNext) |
 
 ### Rails capability → where this stack lands
@@ -112,7 +112,7 @@ the repo is a reference app; the reusable deliverable is the plugin/skill setup
 
 ## Guiding principles
 
-1. **Monolith-first.** One project (`dotnetskills.csproj`), one database, one
+1. **Monolith-first.** One project (`dotnet-agentic-starterkit.csproj`), one database, one
    deployable. No separate Domain / Application / Infrastructure projects, no
    Clean-Architecture ceremony, no service extraction. This is the Rails
    "Majestic Monolith" stance and the whole point of the exercise.
@@ -245,11 +245,11 @@ P7.1** (script route); P7.2 deferred with a pickup trigger, see that item.
 
 Rails gives layout and conventions for free; `CLAUDE.md` still says `TBD`.
 
-- [x] **P0.1** No solution file. Work against `dotnetskills.csproj` directly
+- [x] **P0.1** No solution file. Work against `dotnet-agentic-starterkit.csproj` directly
   (`dotnet build` / `dotnet run` / `dotnet watch`). A `.slnx` only earns its keep
   once a second project exists — add one at **P2.1**. _Skill:_ — · _Accept:_ repo
   has no `.slnx`; the `CLAUDE.md` build block uses `.csproj` paths.
-  _Done:_ `dotnetskills.slnx` (added prematurely in `cf0657c`) removed; `CLAUDE.md`
+  _Done:_ `dotnet-agentic-starterkit.slnx` (added prematurely in `cf0657c`) removed; `CLAUDE.md`
   "Build / run / test" block reverted to `.csproj` paths; `dotnet build` from the
   `.csproj` clean (0 warnings, 0 errors).
 - [x] **P0.2** Decide project layering: stay single-project (fastest, Rails-like)
@@ -280,7 +280,7 @@ Rails gives layout and conventions for free; `CLAUDE.md` still says `TBD`.
   _Done:_ stale status blockquote and the Data-access / Tests `_TBD_` rows
   replaced with parity-plan pointers (P1.1 / P2.1); added Naming & style, Folder
   conventions, Services / DI / data access, and Blazor sub-sections; fixed the
-  stale `dotnet format dotnetskills.slnx` reference. `grep TBD CLAUDE.md` → none.
+  stale `dotnet format dotnet-agentic-starterkit.slnx` reference. `grep TBD CLAUDE.md` → none.
 - [x] **P0.6** Decide the fate of template pages (`Counter`, `Weather`) — delete
   or keep as reference. _Skill:_ — · _Accept:_ decision applied.
   _Done:_ **deleted** `Components/Pages/Counter.razor` + `Weather.razor` and their
@@ -404,8 +404,8 @@ test-*data* convention.
 - [x] **P2.1** Scaffold the test project (xUnit), wire into the solution + CI
   discovery. _Skill:_ `scaffold-dotnet-test-project` · _Accept:_ `dotnet test`
   from the solution discovers and runs it.
-  _Done:_ recreated `dotnetskills.slnx` (web + test projects). Hand-written
-  `tests/dotnetskills.Tests/` — **xUnit v3** (`xunit.v3` 4.0.0), MTP mode via
+  _Done:_ recreated `dotnet-agentic-starterkit.slnx` (web + test projects). Hand-written
+  `tests/dotnet-agentic-starterkit.Tests/` — **xUnit v3** (`xunit.v3` 4.0.0), MTP mode via
   `global.json` `"test": { "runner": "Microsoft.Testing.Platform" }`,
   `OutputType=Exe`, no `Microsoft.NET.Test.Sdk`. `ProjectReference` to the web
   project; `tests/**` excluded from the web project's globs (root-level Web SDK).
@@ -414,7 +414,7 @@ test-*data* convention.
 - [x] **P2.2** Test-data strategy (FactoryBot analog): builder / object-mother
   pattern, `Bogus` for fake data. _Skill:_ `code-testing-agent` (assist)
   · _Accept:_ convention doc + one reusable builder.
-  _Done:_ `Bogus` 35.6.3 added (CPM, test project only). `tests/dotnetskills.Tests/
+  _Done:_ `Bogus` 35.6.3 added (CPM, test project only). `tests/dotnet-agentic-starterkit.Tests/
   TestData/ListingBuilder.cs` — `sealed` fluent builder, valid-by-default,
   `With*` / `.With(x => …)` / `Build` / `BuildMany` / static `Valid()`; defaults
   from a `Faker<Listing>` pinned with `.UseSeed()` (fixed `DefaultSeed`, or a
@@ -430,7 +430,7 @@ test-*data* convention.
   _Done:_ **Testcontainers + real PostgreSQL** — SQLite / EF in-memory rejected
   because P1.1 chose one provider for every environment (migration SQL + type
   mapping must not diverge). `Testcontainers.PostgreSql` 4.6.0 (CPM). Infra in
-  `tests/dotnetskills.Tests/Infrastructure/`: `PostgresFixture` (`postgres:17`
+  `tests/dotnet-agentic-starterkit.Tests/Infrastructure/`: `PostgresFixture` (`postgres:17`
   container, `MigrateAsync` once, `ResetAsync` = `ExecuteDeleteAsync` per table),
   `DatabaseCollectionDefinition` (`[CollectionDefinition("database")]` +
   `ICollectionFixture`), `DatabaseTest` base class (`CreateContext()`, per-test
@@ -591,7 +591,7 @@ test-*data* convention.
   admin user if missing, assigns the role; idempotent. `SeedCommand` resolves
   `UserManager` / `RoleManager` / `IConfiguration` / `IHostEnvironment` from the
   scope and runs it after `DbSeeder`. Credentials: config keys `Seed:AdminEmail`
-  / `Seed:AdminPassword`, dev default `admin@dotnetskills.local` / `Admin!23456`;
+  / `Seed:AdminPassword`, dev default `admin@dotnet-agentic-starterkit.local` / `Admin!23456`;
   **outside Development a `Seed:AdminPassword` is required** or the seeder
   throws. README + `CLAUDE.md` updated. Verified: `dotnet run -- seed` on a DB
   with listings but no identity rows → role + user created, role assigned
@@ -781,11 +781,11 @@ Follow the official Microsoft container guidance ("Containerize a .NET app",
   to the standard multi-stage `Dockerfile` from the `dotnet` samples only if more
   control is needed. Add `.dockerignore`. _Skill:_ `dotnet-webapi` /
   `dotnet-aspnetcore` patterns · _Accept:_ image builds and runs.
-  _Done:_ `dotnet publish dotnetskills.csproj -t:PublishContainer -c Release`
+  _Done:_ `dotnet publish dotnet-agentic-starterkit.csproj -t:PublishContainer -c Release`
   — no Dockerfile added. Base image/tag resolve from `TargetFramework`
   (`mcr.microsoft.com/dotnet/aspnet:10.0`).
   `<ContainerRepository>$(MSBuildProjectName.ToLowerInvariant())</ContainerRepository>`
-  in `dotnetskills.csproj` — **self-derived, not a literal string** (see the
+  in `dotnet-agentic-starterkit.csproj` — **self-derived, not a literal string** (see the
   P5.3 addendum below for why this matters and how it was caught).
   `.dockerignore` added for the documented Dockerfile-fallback path (the SDK
   publish path itself builds from `dotnet publish` output, not a build
@@ -802,7 +802,7 @@ Follow the official Microsoft container guidance ("Containerize a .NET app",
   Redis is added here only at **(vNext)**. _Skill:_ — · _Accept:_ one command
   serves the app with its dependencies.
   _Done:_ `compose.yaml` gets an `app` service — image
-  `${APP_IMAGE:-dotnetskills}:latest` (the P5.1 build), **not** a Dockerfile
+  `${APP_IMAGE:-dotnet-agentic-starterkit}:latest` (the P5.1 build), **not** a Dockerfile
   `build:` section (Compose's build mechanism expects one, and P5.1
   deliberately has none), so a bare `docker compose up` can't build it from
   source. `scripts/run-stack.sh` is what makes it genuinely one command:
@@ -844,10 +844,10 @@ Follow the official Microsoft container guidance ("Containerize a .NET app",
   **Update — it has now actually deployed live**, via the manual path
   (`flyctl deploy --image`), not yet the automated CI/CD path. `fly.toml`'s
   `app`/`primary_region` are filled in with this repo's own instance
-  (`carlnaddy-dotnetskills`, region `ams`), replacing the placeholder — a
+  (`carlnaddy-dotnet-agentic-starterkit`, region `ams`), replacing the placeholder — a
   new project spun from this template must replace that value with its own
   `fly apps create` name (`scripts/new-project.sh` still won't do this for
-  you). Live at `https://carlnaddy-dotnetskills.fly.dev/`; `/`, `/health`,
+  you). Live at `https://carlnaddy-dotnet-agentic-starterkit.fly.dev/`; `/`, `/health`,
   `/alive` all verified `200`. Operational detail — where every credential
   lives, cost, cheat sheet, open items — is in
   [`docs/live-deployment-runbook.md`](live-deployment-runbook.md); the
@@ -889,8 +889,8 @@ Follow the official Microsoft container guidance ("Containerize a .NET app",
   names must be lowercase; this template's rename
   (`scripts/new-project.sh`) produces PascalCase project names
   (`Contoso.Portal`) by design, matching normal .NET convention. The
-  original P5.1/P5.2 design hardcoded literal `dotnetskills` strings in
-  `dotnetskills.csproj`'s `ContainerRepository`, `compose.yaml`'s `image:`,
+  original P5.1/P5.2 design hardcoded literal `dotnet-agentic-starterkit` strings in
+  `dotnet-agentic-starterkit.csproj`'s `ContainerRepository`, `compose.yaml`'s `image:`,
   and `fly.toml`'s `app`; the blanket rename correctly turns all three into
   `Contoso.Portal`, but the SDK's container publish *silently* normalizes
   the invalid casing to `contoso-portal` when it actually builds — so the
@@ -901,7 +901,7 @@ Follow the official Microsoft container guidance ("Containerize a .NET app",
   clone, then `docker compose up` failed with `invalid reference format:
   repository name (library/Contoso.Portal) must be lowercase`. Fixed by
   removing the literal strings entirely rather than patching the docs:
-  `dotnetskills.csproj`'s `ContainerRepository` now self-derives
+  `dotnet-agentic-starterkit.csproj`'s `ContainerRepository` now self-derives
   (`$(MSBuildProjectName.ToLowerInvariant())`, evaluated correctly for any
   project name, nothing to keep in sync); `scripts/run-stack.sh` computes
   the same lowercased value independently (`compose.yaml` can't evaluate
@@ -913,7 +913,7 @@ Follow the official Microsoft container guidance ("Containerize a .NET app",
   unique, chosen at `fly apps create` time) — so it's excluded from the
   rewrite entirely and left an explicit, unambiguous placeholder instead of
   a renamed-but-still-wrong value. Re-verified the complete fix against a
-  fresh renamed clone: `dotnetskills.csproj`/`fly.toml` unaffected by the
+  fresh renamed clone: `dotnet-agentic-starterkit.csproj`/`fly.toml` unaffected by the
   rewrite (nothing left to rewrite in them), `bash scripts/run-stack.sh
   --no-seed` → `docker compose ps` shows `contoso.portal:latest` running,
   `/alive` → 200.
@@ -923,7 +923,7 @@ Follow the official Microsoft container guidance ("Containerize a .NET app",
   `/health` returns 200; auth cookies survive an app restart.
   _Done:_ **Data Protection keys persist in Postgres** —
   `AppDbContext : IDataProtectionKeyContext` (+migration, `DataProtectionKeys`
-  table); `AddDataProtection().SetApplicationName("dotnetskills")
+  table); `AddDataProtection().SetApplicationName("dotnet-agentic-starterkit")
   .PersistKeysToDbContext<AppDbContext>()`. Fixes the exact gap the P5.1
   verification surfaced — the in-memory default regenerates a key ring on
   every restart, silently invalidating every auth cookie/antiforgery token.
@@ -1025,7 +1025,7 @@ deferred to **(vNext)** — see below.
   (`is_template: true`); **"Use this template"** is live. `README.md` is the
   front door; `docs/new-project.md` the full walkthrough. Scripts:
   `preflight.sh` (checks .NET 10 / Docker / Node), `new-project.sh` (rename all
-  `dotnetskills`-named files/dirs, regen `UserSecretsId`, reset README, drop
+  `dotnet-agentic-starterkit`-named files/dirs, regen `UserSecretsId`, reset README, drop
   history docs — **keeps the `Listing` sample by default**, the worked pattern
   every P3/P4 doc points at), `remove-sample.sh` (standalone, run any time for
   a clean skeleton instead — regenerates `Data/Migrations/` from scratch, since

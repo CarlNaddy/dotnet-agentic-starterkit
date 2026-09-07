@@ -1,10 +1,10 @@
-using dotnetskills.Features.Listings;
-using dotnetskills.Tests.Infrastructure;
-using dotnetskills.Tests.TestData;
+using dotnet-agentic-starterkit.Features.Listings;
+using dotnet-agentic-starterkit.Tests.Infrastructure;
+using dotnet-agentic-starterkit.Tests.TestData;
 using Microsoft.Extensions.Caching.Hybrid;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace dotnetskills.Tests.Features.Listings;
+namespace dotnet-agentic-starterkit.Tests.Features.Listings;
 
 /// <summary>
 /// Proves both halves of parity plan P4.3's caching seam against real

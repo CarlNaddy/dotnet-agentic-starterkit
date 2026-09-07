@@ -5,11 +5,11 @@
 #   docker compose down -v          # stop and wipe the database
 #
 # `app` uses the image `dotnet publish -t:PublishContainer` builds (P5.1,
-# dotnetskills.csproj) — not a Dockerfile `build:` section, so the image must
+# dotnet-agentic-starterkit.csproj) — not a Dockerfile `build:` section, so the image must
 # already exist locally before `docker compose up` includes it; run
 # scripts/run-stack.sh instead of a bare `docker compose up` to get both
 # steps as one command. `run-stack.sh` also sets $APP_IMAGE below, lowercased
-# from the .csproj name to match what dotnetskills.csproj's ContainerRepository
+# from the .csproj name to match what dotnet-agentic-starterkit.csproj's ContainerRepository
 # actually builds — a bare `docker compose up` (no $APP_IMAGE) falls back to
 # the template's own literal name, only correct for this repo unrenamed. Dev
 # connection string for the *host* dev loop (`dotnet watch run`) goes in
@@ -22,15 +22,15 @@ services:
     image: postgres:17
     restart: unless-stopped
     environment:
-      POSTGRES_DB: dotnetskills
-      POSTGRES_USER: dotnetskills
+      POSTGRES_DB: dotnet-agentic-starterkit
+      POSTGRES_USER: dotnet-agentic-starterkit
       POSTGRES_PASSWORD: dev_only_change_me
     ports:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U dotnetskills -d dotnetskills"]
+      test: ["CMD-SHELL", "pg_isready -U dotnet-agentic-starterkit -d dotnet-agentic-starterkit"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -51,7 +51,7 @@ services:
   # `db`/`mail` by their service names, not localhost — a different network
   # namespace than the host-side dev loop uses.
   app:
-    image: ${APP_IMAGE:-dotnetskills}:latest
+    image: ${APP_IMAGE:-dotnet-agentic-starterkit}:latest
     restart: unless-stopped
     depends_on:
       db:
@@ -60,7 +60,7 @@ services:
         condition: service_started
     environment:
       ASPNETCORE_ENVIRONMENT: Development
-      ConnectionStrings__Default: "Host=db;Port=5432;Database=dotnetskills;Username=dotnetskills;Password=dev_only_change_me"
+      ConnectionStrings__Default: "Host=db;Port=5432;Database=dotnet-agentic-starterkit;Username=dotnet-agentic-starterkit;Password=dev_only_change_me"
       Email__Host: mail
       Email__Port: "25"
     ports:

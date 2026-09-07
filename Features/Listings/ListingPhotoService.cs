@@ -1,8 +1,8 @@
-using dotnetskills.Data;
-using dotnetskills.Features.Files;
+using dotnet-agentic-starterkit.Data;
+using dotnet-agentic-starterkit.Features.Files;
 using Microsoft.EntityFrameworkCore;
 
-namespace dotnetskills.Features.Listings;
+namespace dotnet-agentic-starterkit.Features.Listings;
 
 /// <summary>
 /// Attaches a photo to a <see cref="Listing"/> — the worked pattern for

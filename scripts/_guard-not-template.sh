@@ -1,7 +1,7 @@
 # Shared guard: refuse to run a template-mutating script against the
-# canonical dotnetskills template repo itself. A project created the
+# canonical dotnet-agentic-starterkit template repo itself. A project created the
 # documented way — GitHub's "Use this template" button, then clone that new
-# repo — never has 'origin' pointing at github.com/CarlNaddy/dotnetskills;
+# repo — never has 'origin' pointing at github.com/CarlNaddy/dotnet-agentic-starterkit;
 # only the template repo itself does. That makes the remote URL a reliable,
 # no-extra-state signal to tell the two apart.
 #
@@ -12,14 +12,14 @@
 guard_not_template_repo() {
     local origin
     origin="$(git remote get-url origin 2>/dev/null || true)"
-    printf '%s' "$origin" | grep -qiE 'github\.com[:/]CarlNaddy/dotnetskills(\.git)?/?$' \
+    printf '%s' "$origin" | grep -qiE 'github\.com[:/]CarlNaddy/dotnet-agentic-starterkit(\.git)?/?$' \
         || return 0
     [ "${I_UNDERSTAND_THIS_IS_THE_TEMPLATE:-0}" = "1" ] && return 0
 
     cat >&2 <<EOF
 
 refusing to run $(basename "$0"): this repo's 'origin' remote is the
-canonical dotnetskills template (github.com/CarlNaddy/dotnetskills), not a
+canonical dotnet-agentic-starterkit template (github.com/CarlNaddy/dotnet-agentic-starterkit), not a
 project created from it. Running this here would mutate the template
 itself, not a new project.
 

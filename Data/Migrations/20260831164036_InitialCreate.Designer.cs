@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using dotnetskills.Data;
+using dotnet-agentic-starterkit.Data;
 
 #nullable disable
 
-namespace dotnetskills.Data.Migrations
+namespace dotnet-agentic-starterkit.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     [Migration("20260831164036_InitialCreate")]

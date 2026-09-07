@@ -1,13 +1,13 @@
-using dotnetskills.Components;
-using dotnetskills.Components.Account;
-using dotnetskills.Data;
-using dotnetskills.Data.Seed;
-using dotnetskills.Endpoints;
-using dotnetskills.Features.Console;
-using dotnetskills.Features.Email;
-using dotnetskills.Features.Files;
-using dotnetskills.Features.Jobs;
-using dotnetskills.Features.Listings;
+using dotnet-agentic-starterkit.Components;
+using dotnet-agentic-starterkit.Components.Account;
+using dotnet-agentic-starterkit.Data;
+using dotnet-agentic-starterkit.Data.Seed;
+using dotnet-agentic-starterkit.Endpoints;
+using dotnet-agentic-starterkit.Features.Console;
+using dotnet-agentic-starterkit.Features.Email;
+using dotnet-agentic-starterkit.Features.Files;
+using dotnet-agentic-starterkit.Features.Jobs;
+using dotnet-agentic-starterkit.Features.Listings;
 using Hangfire;
 using Hangfire.PostgreSql;
 using Microsoft.AspNetCore.Components.Web;
@@ -123,7 +123,7 @@ builder.Services.AddIdentityCore<ApplicationUser>(options =>
 // same Postgres-stored keys wouldn't be recognized as belonging to "this app"
 // from both environments. See docs/deployment.md.
 builder.Services.AddDataProtection()
-    .SetApplicationName("dotnetskills")
+    .SetApplicationName("dotnet-agentic-starterkit")
     .PersistKeysToDbContext<AppDbContext>();
 
 // P3.3: Register/Login static-SSR pages redirect via NavigationManager, which

@@ -1,9 +1,9 @@
-using dotnetskills.Data;
-using dotnetskills.Tests.Infrastructure;
-using dotnetskills.Tests.TestData;
+using dotnet-agentic-starterkit.Data;
+using dotnet-agentic-starterkit.Tests.Infrastructure;
+using dotnet-agentic-starterkit.Tests.TestData;
 using Microsoft.EntityFrameworkCore;
 
-namespace dotnetskills.Tests.Data;
+namespace dotnet-agentic-starterkit.Tests.Data;
 
 /// <summary>
 /// The P2.3 database-tier smoke test: a <see cref="Listing"/> survives a real

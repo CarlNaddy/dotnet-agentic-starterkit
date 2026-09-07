@@ -11,7 +11,7 @@
 # excluded from scripts/new-project.sh's identifier rewrite. Replace it with
 # whatever you `fly apps create` yourself.
 
-app = "carlnaddy-dotnetskills"
+app = "carlnaddy-dotnet-agentic-starterkit"
 primary_region = "ams"        # Amsterdam, Netherlands
 
 [build]
@@ -20,7 +20,7 @@ primary_region = "ams"        # Amsterdam, Netherlands
   # otherwise look for a Dockerfile, which doesn't exist here on purpose.
 
 [deploy]
-  # The app does not auto-migrate on startup — only `dotnet dotnetskills.dll
+  # The app does not auto-migrate on startup — only `dotnet dotnet-agentic-starterkit.dll
   # seed` does (applies pending migrations, then runs the idempotent sample +
   # admin seeders; see Data/Seed/SeedCommand.cs). Fly runs this in a temporary
   # machine, with the app's secrets and DB access, before each release goes

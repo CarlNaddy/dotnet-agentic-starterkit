@@ -1,4 +1,4 @@
-namespace dotnetskills.Data;
+namespace dotnet-agentic-starterkit.Data;
 
 /// <summary>
 /// A lightweight audit trail of background-job outcomes (parity plan P4.1).

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Localization;
 
-namespace dotnetskills.Endpoints;
+namespace dotnet-agentic-starterkit.Endpoints;
 
 public static class CultureEndpoints
 {

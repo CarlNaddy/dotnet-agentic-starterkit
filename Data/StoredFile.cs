@@ -1,4 +1,4 @@
-namespace dotnetskills.Data;
+namespace dotnet-agentic-starterkit.Data;
 
 /// <summary>
 /// Metadata for a file held by an <see cref="Features.Files.IFileStore"/>

@@ -1,8 +1,8 @@
-using dotnetskills.Data;
+using dotnet-agentic-starterkit.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace dotnetskills.Endpoints;
+namespace dotnet-agentic-starterkit.Endpoints;
 
 public static class AccountEndpoints
 {

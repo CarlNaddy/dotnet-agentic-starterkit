@@ -42,7 +42,7 @@ was already present as untracked files at the start of the session — it was
 
 ```bash
 git checkout -b scaffold/blazor-web-app
-git add Components Program.cs Properties appsettings.json appsettings.Development.json dotnetskills.csproj wwwroot
+git add Components Program.cs Properties appsettings.json appsettings.Development.json dotnet-agentic-starterkit.csproj wwwroot
 git commit -m "Scaffold Blazor Web App (dotnet new blazor -int Server)"
 git checkout main
 git merge --ff-only scaffold/blazor-web-app
@@ -51,7 +51,7 @@ git branch -d scaffold/blazor-web-app
 
 ## 4. Retarget to .NET 10
 
-Edited `dotnetskills.csproj`: `<TargetFramework>net8.0</TargetFramework>` →
+Edited `dotnet-agentic-starterkit.csproj`: `<TargetFramework>net8.0</TargetFramework>` →
 `net10.0`. First build failed because only the .NET 8 SDK was installed:
 
 ```bash
@@ -72,7 +72,7 @@ No `global.json` is present, so `dotnet` resolves to the highest installed SDK
 
 ## 5. Wire up MudBlazor
 
-Added `MudBlazor` 9.9.0 to `dotnetskills.csproj` and wired it per the
+Added `MudBlazor` 9.9.0 to `dotnet-agentic-starterkit.csproj` and wired it per the
 `mudblazor:mudblazor` skill (services, imports, head/script tags, `MainLayout`
 providers), switched to global Interactive Server render mode, converted the
 template pages off Bootstrap, and deleted `wwwroot/bootstrap/`. Verified:

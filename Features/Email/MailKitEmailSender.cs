@@ -1,11 +1,11 @@
-using dotnetskills.Data;
+using dotnet-agentic-starterkit.Data;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using MimeKit;
 
-namespace dotnetskills.Features.Email;
+namespace dotnet-agentic-starterkit.Features.Email;
 
 /// <summary>
 /// Sends the Identity-triggered emails (parity plan P4.2) via MailKit, over

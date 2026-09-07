@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace dotnetskills.Data.Seed;
+namespace dotnet-agentic-starterkit.Data.Seed;
 
 /// <summary>
 /// Inserts sample data when the database is empty. Idempotent — safe to run

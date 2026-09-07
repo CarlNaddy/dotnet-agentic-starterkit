@@ -2,7 +2,7 @@ using Bunit;
 using Microsoft.Extensions.DependencyInjection;
 using MudBlazor.Services;
 
-namespace dotnetskills.Tests.Infrastructure;
+namespace dotnet-agentic-starterkit.Tests.Infrastructure;
 
 /// <summary>
 /// bUnit context pre-wired for this app's components (rails-parity plan P2.4):

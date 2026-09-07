@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace dotnetskills.Data.Migrations
+namespace dotnet-agentic-starterkit.Data.Migrations
 {
     /// <inheritdoc />
     public partial class RenameAreaColumn : Migration

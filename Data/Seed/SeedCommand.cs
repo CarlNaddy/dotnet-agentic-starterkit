@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace dotnetskills.Data.Seed;
+namespace dotnet-agentic-starterkit.Data.Seed;
 
 /// <summary>
 /// Entry point for <c>dotnet run -- seed</c>: applies pending migrations, then

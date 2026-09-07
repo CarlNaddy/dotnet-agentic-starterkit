@@ -1,8 +1,8 @@
-using dotnetskills.Data;
+using dotnet-agentic-starterkit.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Hybrid;
 
-namespace dotnetskills.Features.Listings;
+namespace dotnet-agentic-starterkit.Features.Listings;
 
 /// <summary>
 /// Cached reads for the <see cref="Listing"/> feature (parity plan P4.3) —
